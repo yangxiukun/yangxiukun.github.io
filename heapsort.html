@@ -94,14 +94,14 @@
 
 
 
-<meta name="description" content="Leetcode1.two Sum难度：简单给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。 示例:给定 nums &#x3D; [2, 7, 11, 15], target &#x3D; 9因为 nums[0] + nums[1] &#x3D; 2 + 7 &#x3D; 9所以返回 [0,">
+<meta name="description" content="堆的相关概念二叉树：每个节点最多有两个子树的数结构，一个节点只能分两叉。 完全二叉树：二叉树的层数为h，除最后一层外，其他层都必须挂满，而且最后一层叶子节点得从左往右依次排列。 堆：是完全二叉树，分为大根堆和小根堆。大根堆是父节点比子节点大，小根堆是父节点比子节点小。 堆的存储：用数组来表示堆，若root节点存在序号0处，那么第i节点得父节点下标就为取整(i-1)&#x2F;2。该节点得左右子节点为 2i+">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python Leetcode">
-<meta property="og:url" content="https://github.com/yangxiukun/yangxiukun.github.io.git/leetcode-easy.html">
+<meta property="og:title" content="heapsort">
+<meta property="og:url" content="https://github.com/yangxiukun/yangxiukun.github.io.git/heapsort.html">
 <meta property="og:site_name" content="Rick C-137">
-<meta property="og:description" content="Leetcode1.two Sum难度：简单给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。 示例:给定 nums &#x3D; [2, 7, 11, 15], target &#x3D; 9因为 nums[0] + nums[1] &#x3D; 2 + 7 &#x3D; 9所以返回 [0,">
-<meta property="article:published_time" content="2020-06-07T02:29:13.000Z">
-<meta property="article:modified_time" content="2020-06-07T03:16:18.714Z">
+<meta property="og:description" content="堆的相关概念二叉树：每个节点最多有两个子树的数结构，一个节点只能分两叉。 完全二叉树：二叉树的层数为h，除最后一层外，其他层都必须挂满，而且最后一层叶子节点得从左往右依次排列。 堆：是完全二叉树，分为大根堆和小根堆。大根堆是父节点比子节点大，小根堆是父节点比子节点小。 堆的存储：用数组来表示堆，若root节点存在序号0处，那么第i节点得父节点下标就为取整(i-1)&#x2F;2。该节点得左右子节点为 2i+">
+<meta property="article:published_time" content="2020-09-12T05:29:09.000Z">
+<meta property="article:modified_time" content="2020-09-12T08:15:23.866Z">
 <meta property="article:author" content="Yang">
 <meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary">
@@ -133,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/yangxiukun/yangxiukun.github.io.git/leetcode-easy.html"/>
+  <link rel="canonical" href="https://github.com/yangxiukun/yangxiukun.github.io.git/heapsort.html"/>
 
 
 
 
 
-  <title>Python Leetcode | Rick C-137</title>
+  <title>heapsort | Rick C-137</title>
   
 
 
@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/yangxiukun/yangxiukun.github.io.git/leetcode-easy.html">
+    <link itemprop="mainEntityOfPage" href="https://github.com/yangxiukun/yangxiukun.github.io.git/heapsort.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yang">
@@ -279,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Python Leetcode</h1>
+          <h1 class="post-title" itemprop="name headline">heapsort</h1>
         
 
         <div class="post-meta">
@@ -291,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-07T10:29:13+08:00">
-                2020-06-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-09-12T13:29:09+08:00">
+                2020-09-12
               </time>
             
 
@@ -310,8 +310,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/leetcode-easy.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="leetcode-easy.html" itemprop="commentCount"></span>
+                <a href="/heapsort.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="heapsort.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -339,19 +339,14 @@
       
 
       
-        <h1 id="Leetcode"><a href="#Leetcode" class="headerlink" title="Leetcode"></a><center>Leetcode</center></h1><h2 id="1-two-Sum"><a href="#1-two-Sum" class="headerlink" title="1.two Sum"></a>1.two Sum</h2><p>难度：简单<br>给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。<br>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。</p>
-<p>示例:<br>给定 nums = [2, 7, 11, 15], target = 9<br>因为 nums[0] + nums[1] = 2 + 7 = 9<br>所以返回 [0, 1]</p>
+        <h1 id="堆的相关概念"><a href="#堆的相关概念" class="headerlink" title="堆的相关概念"></a>堆的相关概念</h1><p><strong>二叉树</strong>：每个节点最多有两个子树的数结构，一个节点只能分两叉。</p>
+<p><strong>完全二叉树</strong>：二叉树的层数为h，除最后一层外，其他层都必须挂满，而且最后一层叶子节点得从左往右依次排列。</p>
+<p><strong>堆</strong>：是完全二叉树，分为大根堆和小根堆。大根堆是父节点比子节点大，小根堆是父节点比子节点小。</p>
+<p>堆的存储：用数组来表示堆，若root节点存在序号0处，那么第i节点得父节点下标就为取整(i-1)/2。该节点得左右子节点为 2<em>i+1，2</em>i+2.<br>（如果root节点从1开始，那左右孩子节点分别为2i，2i+1.）</p>
+<h2 id="如何转化为大根堆："><a href="#如何转化为大根堆：" class="headerlink" title="如何转化为大根堆："></a>如何转化为大根堆：</h2><p>大根堆： 要求每个节点得值都大于它两个子节点的值，一个简单方法就是从最底层节点开始一个个调整大小关系。</p>
+<p>但因最后一层都是叶子节点，其没有孩子节点，所以要找到第一个有孩子节点的父节点，然后从该节点进行堆调整。如果最后一个叶子节点为a，其父节点为（a-1）/2.</p>
 <a id="more"></a>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">two_sum</span><span class="params">(givenlist,target)</span>:</span></span><br><span class="line">	<span class="string">"""  Python solution in O(n) time"""</span></span><br><span class="line">	<span class="string">""" 遍历列表，将target与列表当前索引值的差和索引记录到字典中去"""</span></span><br><span class="line">	<span class="string">"""下次列表遇到值在字典中，即找到输出"""</span></span><br><span class="line">	<span class="keyword">if</span> len(givenlist) &lt;=<span class="number">1</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">	buff_dict = &#123;&#125;</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(len(givenlist)):</span><br><span class="line">		<span class="keyword">if</span>  givenlist[i] <span class="keyword">in</span> buff_dict:</span><br><span class="line">			<span class="keyword">return</span>  [buff_dict[givenlist[i]] , i]</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			buff_dict[target - givenlist[i]] = i</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">two_sum</span><span class="params">(nums, target)</span>:</span></span><br><span class="line">    <span class="string">"""遍历列表同时查字典"""</span></span><br><span class="line">	<span class="keyword">if</span> len(givenlist) &lt;=<span class="number">1</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    dct = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i, n <span class="keyword">in</span> enumerate(nums):</span><br><span class="line">        <span class="keyword">if</span> target - n <span class="keyword">in</span> dct:</span><br><span class="line">            <span class="keyword">return</span> [dct[target - n], i]</span><br><span class="line">        <span class="keyword">else</span>:dct[n] = i</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="2-两数相加"><a href="#2-两数相加" class="headerlink" title="2. 两数相加"></a>2. 两数相加</h2><p>给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。</p>
-<p>如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。</p>
-<p>您可以假设除了数字 0 之外，这两个数都不会以 0 开头。</p>
-<p>示例：</p>
-<p>输入：(2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)<br>输出：7 -&gt; 0 -&gt; 8<br>原因：342 + 465 = 807</p>
-
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heapify</span><span class="params">(arr,n,i)</span>:</span></span><br><span class="line">	largest  = i  <span class="comment"># Initialize largest as root </span></span><br><span class="line">	l = <span class="number">2</span>*i+<span class="number">1</span></span><br><span class="line">	r = <span class="number">2</span>*i + <span class="number">2</span></span><br><span class="line">	<span class="comment"># If left child is larger than root (also check if the child exist)</span></span><br><span class="line">	<span class="keyword">if</span> l &lt; n <span class="keyword">and</span> arr[l] &gt; arr[largest]:</span><br><span class="line">		largest = l</span><br><span class="line">	<span class="keyword">if</span> r &lt; n <span class="keyword">and</span> arr[r] &gt; arr[largest]:</span><br><span class="line">		largest = r</span><br><span class="line">	<span class="comment"># if largest is not root</span></span><br><span class="line">	<span class="keyword">if</span> largest != i:</span><br><span class="line">		arr[i] ,arr[largest] = arr[largest],arr[i] <span class="comment">##swap</span></span><br><span class="line">		<span class="comment"># 然后对其交换的位置 进行heapify。</span></span><br><span class="line">		heapify(arr,n,largest)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数组arr，长度n</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">buildheap</span><span class="params">(arr,n)</span>:</span></span><br><span class="line">	<span class="comment">#Index of last non-leaf node</span></span><br><span class="line">	startidx = n//<span class="number">2</span> <span class="number">-1</span></span><br><span class="line">	<span class="comment"># Perform reverse level order traversal </span></span><br><span class="line">    <span class="comment"># from last non-leaf node and heapify </span></span><br><span class="line">    <span class="comment"># each node </span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(startidx , <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">		heapify(arr,n,i)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heapsort</span><span class="params">(arr)</span>:</span></span><br><span class="line">	n = len(arr)</span><br><span class="line">	<span class="keyword">while</span> n &gt;<span class="number">1</span>:</span><br><span class="line">		arr[<span class="number">0</span>],arr[n<span class="number">-1</span>] = arr[n<span class="number">-1</span>],arr[<span class="number">0</span>]<span class="comment">#将最大值放到数组末端</span></span><br><span class="line">		heapify(arr, n<span class="number">-1</span>, <span class="number">0</span>)<span class="comment"># 然后对数组除最后一个外的其他值进行heapify</span></span><br><span class="line">		n = n<span class="number">-1</span> </span><br><span class="line">	<span class="keyword">return</span> arr</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -381,8 +376,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/python%E8%A7%A3%E6%9E%90%E8%AF%AD%E6%B3%95.html" rel="next" title="python解析语法">
-                <i class="fa fa-chevron-left"></i> python解析语法
+              <a href="/DAC.html" rel="next" title="Divide and Conquer Algorithm(分而治之算法)">
+                <i class="fa fa-chevron-left"></i> Divide and Conquer Algorithm(分而治之算法)
               </a>
             
           </div>
@@ -390,10 +385,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/python%20%E9%80%92%E5%BD%92.html" rel="prev" title="python 递归">
-                python 递归 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -423,8 +414,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="leetcode-easy.html"
-           data-title="Python Leetcode" data-url="https://github.com/yangxiukun/yangxiukun.github.io.git/leetcode-easy.html">
+      <div class="ds-thread" data-thread-key="heapsort.html"
+           data-title="heapsort" data-url="https://github.com/yangxiukun/yangxiukun.github.io.git/heapsort.html">
       </div>
     
   </div>
@@ -535,7 +526,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Leetcode"><span class="nav-number">1.</span> <span class="nav-text">Leetcode</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-two-Sum"><span class="nav-number">1.1.</span> <span class="nav-text">1.two Sum</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-两数相加"><span class="nav-number">1.2.</span> <span class="nav-text">2. 两数相加</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#堆的相关概念"><span class="nav-number">1.</span> <span class="nav-text">堆的相关概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何转化为大根堆："><span class="nav-number">1.1.</span> <span class="nav-text">如何转化为大根堆：</span></a></li></ol></li></ol></div>
             
 
           </div>
