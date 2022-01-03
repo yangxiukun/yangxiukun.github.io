@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  <meta name="description" content="Morty">
+  
+  <title>
+    栈，队列和双端队列 |
+    
+    Morty
+  </title>
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="57x57" href="/icon/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/icon/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/icon/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/icon/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/icon/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/icon/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/icon/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon-180x180.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="/icon/apple-touch-icon-167x167.png">
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-python 栈,队列和双端队列" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h1 class="article-title" itemprop="name">
+  栈，队列和双端队列
+</h1>
+
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/06/14/python%20%E6%A0%88,%E9%98%9F%E5%88%97%E5%92%8C%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97/" class="article-date">
+  <time datetime="2020-06-14T06:44:05.000Z" itemprop="datePublished">2020-06-14</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <h1 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h1><p>  栈是最简单的数据结构，先进后出。<br>抽象数据类型(ADT)：</p>
+<ul>
+<li>S.push(e):将一个元素e添加到栈S的栈顶</li>
+<li>S.pop():将栈顶元素移除并返回栈顶的元素，如果此时栈为空的，操作将出错。</li>
+<li>S.top():不移除栈顶元素，返回一个栈S的栈顶元素；若为空，操作将出错。</li>
+<li>S.is_empty() : 如果栈中不包含任何元素，返回布尔值“True”</li>
+<li>len(s): 返回栈S中元素的数量。用 __ len __  这个方法实现它。<span id="more"></span></li>
+</ul>
+<p>用Python列表作为存储实现一个栈</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArrayStack</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self._data = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self._data)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self._data) == <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span>(<span class="params">self,e</span>):</span></span><br><span class="line">        self._data.append(e)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">top</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span>  self.is_empty():</span><br><span class="line">            <span class="keyword">raise</span> Empty(<span class="string">&#x27;stack is empty!!&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> self._data[-<span class="number">1</span>]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">raise</span> Empty(<span class="string">&quot;stack is empty!!!&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> self._data.pop()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用栈实现数据的逆置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reverse_file</span>(<span class="params">filename</span>):</span></span><br><span class="line">	S = ArrayStack()</span><br><span class="line">	original = <span class="built_in">open</span>(filename)</span><br><span class="line">	<span class="keyword">for</span> line <span class="keyword">in</span> original:</span><br><span class="line">		S.push(line.rstrip(<span class="string">&#x27;\n&#x27;</span>))</span><br><span class="line">	original.close()</span><br><span class="line">	output = <span class="built_in">open</span>(filename,<span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">	<span class="keyword">while</span> <span class="keyword">not</span> S.is_empty():</span><br><span class="line">		output.write(S.pop() + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">	output.close()</span><br></pre></td></tr></table></figure>
+
+<p>分隔符的匹配算法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_matched</span>(<span class="params">expr</span>):</span></span><br><span class="line">	lefty = <span class="string">&#x27;(&#123;[&#x27;</span></span><br><span class="line">	righty = <span class="string">&#x27;)&#125;]&#x27;</span></span><br><span class="line">	S = ArrayStack()</span><br><span class="line">	<span class="keyword">for</span> c <span class="keyword">in</span> expr:</span><br><span class="line">		<span class="keyword">if</span> c <span class="keyword">in</span> lefty:</span><br><span class="line">			S.push(c)</span><br><span class="line">		<span class="keyword">elif</span> c <span class="keyword">in</span> righty:</span><br><span class="line">			<span class="keyword">if</span> S.is_empty():</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">			<span class="keyword">if</span> righty.index(c) != lefty.index(S.pop()):</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">	<span class="keyword">return</span> S.is_empty()</span><br></pre></td></tr></table></figure>
+
+<h1 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h1><p>队列：先进先出，允许插入的一端为队尾，允许删除的一端为队头。<br>队列的抽象数据类型（ADT）支持：</p>
+<ul>
+<li>Q.enqueue(e) : 向队列Q的队尾添加一个元素。</li>
+<li>Q.dequeue() :向队列Q中移除并返回第一个元素，如果队列为空，则触发一个错误。</li>
+<li>Q.first() :在不移除的前提下返回第一个元素，如果队列为空，则触发一个错误。</li>
+<li>Q.is_empty() :如果队列Q没有包含任何元素则返回“True”</li>
+<li>len(Q) : 返回Q中元素的数量；使用 __ len __ 方法实现。</li>
+</ul>
+<p>基于数组的队列实现：</p>
+<p>1：到一个元素退出队列时，我们可以使用pop(0)从列表中移除第一个元素，但其最低效，因为删除列表首元素后，列表后面的元素都会左移动一位，为了填补pop操作给序列造成的“洞”，因此pop(0)的操作的调用总是处于最坏的情况，耗时为O(n)。</p>
+<p>2：对其改进避免调用pop(0),可以用一个指针为空的指针代替这个数组中离队的元素，并保留一个变量来储存当前在最前面的元素的索引，这样对离队操作而言耗时O(1).</p>
+<p>3:但不幸的是，修改后的方法仍然有一个缺点。如果不断重复地往一个队列中添加一个新的元素，然后删除最右端（将列表首元素指向空指针），其底层的列表大小将会增长到O(m)，m为自队列建立以来对队列进行追加元素操作的数量总和，而不是当前队列中元素的数量。对于这种情况，使用循环数组，假设底层数组的长度最小固定为N，当元素超过其数值时，底层数组长度变为2N，当元素不足N时，将其数组循环 以增加和删除操作，并保存首元素的索引。 当其删除操作致使实际元素小于底层数组大小的1/4 时，将底层数组减半（但最小数组固定为N）</p>
+<p>实现方法：</p>
+<ul>
+<li>_data: 指向一个固定容量的列表实例。</li>
+<li>_size: 是一个整数，代表当前存储在队列内的元素的数量。(与_data 列表的长度正好相对）</li>
+<li>_front: 代表_data实例队列中第一个元素的索引。当因增加或删除导致底层数组进行扩展或收缩时，将队列的—_front索引初始化为0.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArrayQueue</span>:</span></span><br><span class="line">    DEFAULT_CAPACITY = <span class="number">10</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self._data = [<span class="literal">None</span>]* ArrayQueue.DEFAULT_CAPACITY</span><br><span class="line">        self._size = <span class="number">0</span></span><br><span class="line">        self._front = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size == <span class="number">0</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">first</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;erroe&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self._data[self._front]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dequeue</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> (<span class="string">&#x27;queue is empty!!!&#x27;</span>)</span><br><span class="line">        answer = self._data[self._front] <span class="comment"># 保存队列首元素的值</span></span><br><span class="line">        self._data[self._front] = <span class="literal">None</span> <span class="comment">#将队列首元素设置为None</span></span><br><span class="line">        self._front = (self._front+<span class="number">1</span>)% <span class="built_in">len</span>(self._data) <span class="comment"># 更新首元素对应的索引值</span></span><br><span class="line">        self._size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> <span class="number">0</span>&lt; self._size &lt; <span class="built_in">len</span>(self._data)//<span class="number">4</span> <span class="keyword">and</span> <span class="built_in">len</span>(self._data)//<span class="number">2</span> &gt;= ArrayQueue.DEFAULT_CAPACITY: <span class="comment"># 删除队列首元素后，判断一下队列中的元素个数 。</span></span><br><span class="line">            self._resize(<span class="built_in">len</span>(self._data)//<span class="number">2</span>)                                <span class="comment"># 如小于底层数组大小的1/4 就将底层数组减半</span></span><br><span class="line">        <span class="keyword">return</span> answer </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">enequeue</span>(<span class="params">self,value</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self._size == <span class="built_in">len</span>(self._data): <span class="comment"># 判断队列元素是否占满底层数组，如果占满进入 _resize函数，将底层数组大小扩展为2倍。</span></span><br><span class="line">            self._resize(<span class="number">2</span>*<span class="built_in">len</span>(self._data))</span><br><span class="line">        avail = (self._front + self._size) % <span class="built_in">len</span>(self._data) <span class="comment"># 找到队列的增加元素的索引。</span></span><br><span class="line">             <span class="comment">#如self._front == 8,self._size == 3，即(8+3)%10为1. 即增加value的索引为1.</span></span><br><span class="line">        self._data[avail] = value  </span><br><span class="line">        self._size += <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_resize</span>(<span class="params">self,cap</span>):</span></span><br><span class="line">        <span class="comment"># 底层数组的扩展：当队列原始的大小正好为底层数组大小时，进行底层数组的扩展。</span></span><br><span class="line">        old = self._data  <span class="comment"># 将排满元素的底层数组保存到old变量中</span></span><br><span class="line">        self._data = [<span class="literal">None</span>] * cap <span class="comment"># 生成新大小的底层数组</span></span><br><span class="line">        walk = self._front <span class="comment"># 保存原始队列的头部索引</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self._size):</span><br><span class="line">            self._data[i] = old[walk] <span class="comment"># 用变量walk保存位置索引，将原始数组从头部往尾部循环，将其对应值赋值给新序列。</span></span><br><span class="line">            walk = (walk+<span class="number">1</span>)%<span class="built_in">len</span>(old) <span class="comment"># 将walk指向下一位</span></span><br><span class="line">        self._front = <span class="number">0</span> <span class="comment">#将新队列的头部指向位置0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="双端队列"><a href="#双端队列" class="headerlink" title="双端队列"></a>双端队列</h1><p>其数据结构：支持在队列的头部和尾部都进行插入和删除操作。</p>
+<ul>
+<li>D.add_first(e) :向双端队列前面添加一个元素e</li>
+<li>D.add_last(e) :向双端队列的后面添加一个元素e</li>
+<li>D.delete_first():从双端队列中移除并返回第一个元素。若双端队列为空，则触发一个错误。</li>
+<li>D.delete_last() :从双端队列中移除并返回最后一个元素，若双端队列为空，则触发一个错误。</li>
+<li>D.first() : 返回（但不移除）双端队列的第一个元素。若双端队列为空，则触发一个错误。</li>
+<li>D.last() : 返回（但不移除）双端队列的最后一个元素，若双端队列为空，则触发一个错误。</li>
+<li>D.is_empty() :如果双端队列不包含任何一个元素，则返回布尔值True</li>
+<li>len(D) : 返回当前双端队列的元素个数，用 __ len __ 方法实现。</li>
+</ul>
+<p>使用循环数组实现双端队列：建议保持三个变量： _data , _size , _front</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">double_queue</span>:</span></span><br><span class="line">    Array_capacity = <span class="number">10</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self._data = [<span class="literal">None</span>] * double_queue.Array_capacity</span><br><span class="line">        self._front = <span class="number">0</span></span><br><span class="line">        self._size = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size == <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">first</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Queue is Empty!!&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self._data[self._front]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">last</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Queue is Empty!!&quot;</span></span><br><span class="line">        last = (self._front + self._size -<span class="number">1</span>) % <span class="built_in">len</span>(self._data)</span><br><span class="line">        <span class="keyword">return</span> self._data[last]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_first</span>(<span class="params">self,value</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self._size == <span class="built_in">len</span>(self._data):</span><br><span class="line">            self._resize(<span class="number">2</span>*<span class="built_in">len</span>(self._data))</span><br><span class="line">        front_index = (self._front-<span class="number">1</span>) % <span class="built_in">len</span>(self._data) </span><br><span class="line">        self._data[front_index] = value</span><br><span class="line">        self._front  = (front_index + <span class="built_in">len</span>(self._data))%(<span class="built_in">len</span>(self._data))</span><br><span class="line">        self._size += <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_last</span>(<span class="params">self,value</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self._size == <span class="built_in">len</span>(self._data):</span><br><span class="line">            self._resize(<span class="number">2</span>*<span class="built_in">len</span>(self._data))</span><br><span class="line">        last = (self._front + self._size  ) % <span class="built_in">len</span>(self._data)</span><br><span class="line">        self._data[last] = value</span><br><span class="line">        self._size += <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete_first</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Queue is Empty&quot;</span></span><br><span class="line">        answer = self._data[self._front]</span><br><span class="line">        self._data[self._front] = <span class="literal">None</span></span><br><span class="line">        self._front = (self._front+<span class="number">1</span>) % <span class="built_in">len</span>(self._data)</span><br><span class="line">        self._size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> answer</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete_last</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Queue is Empty&quot;</span></span><br><span class="line">        last = (self._front + self._size -<span class="number">1</span> ) % <span class="built_in">len</span>(self._data)</span><br><span class="line">        answer = self._data[last]</span><br><span class="line">        self._data[last] = <span class="literal">None</span></span><br><span class="line">        self._size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span>  <span class="number">0</span>&lt; self._size&lt; <span class="built_in">len</span>(self._data)//<span class="number">4</span> <span class="keyword">and</span> <span class="built_in">len</span>(self._data)//<span class="number">2</span> &gt;= double_queue.Array_capacity:</span><br><span class="line">            self._resize(<span class="built_in">len</span>(self._data)//<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span> answer</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_resize</span>(<span class="params">self,cap</span>):</span></span><br><span class="line">        old = self._data</span><br><span class="line">        self._data = [<span class="literal">None</span>] * cap</span><br><span class="line">        walk = self._front</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self._size):</span><br><span class="line">            self._data[i] = old[walk]</span><br><span class="line">            walk = (walk+<span class="number">1</span>) % <span class="built_in">len</span>(old)</span><br><span class="line">        self._front = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        a = []</span><br><span class="line">        walk = self._front</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self._size):</span><br><span class="line">            a.append(self._data[walk])</span><br><span class="line">            walk = (walk +<span class="number">1</span>)%<span class="built_in">len</span>(self._data)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">str</span>(a)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/06/14/python%20%E6%A0%88,%E9%98%9F%E5%88%97%E5%92%8C%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97/" data-id="ckxy6h9on000pusuwh89565yp" class="article-share-link">
+        分享
+      </a>
+      
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2020/06/20/python%20linkedlist/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      链表
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2020/06/07/leetcode-easy/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">Python Leetcode</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>Morty &copy; 2022</li>
+      
+        <li></li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="Morty"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">Home</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">Archives</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">Gallery</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">About</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>

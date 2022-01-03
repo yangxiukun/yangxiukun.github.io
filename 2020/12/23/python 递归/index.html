@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  <meta name="description" content="Morty">
+  
+  <title>
+    递归 |
+    
+    Morty
+  </title>
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="57x57" href="/icon/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/icon/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/icon/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/icon/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/icon/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/icon/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/icon/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon-180x180.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="/icon/apple-touch-icon-167x167.png">
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-python 递归" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h1 class="article-title" itemprop="name">
+  递归
+</h1>
+
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/12/23/python%20%E9%80%92%E5%BD%92/" class="article-date">
+  <time datetime="2020-12-23T08:31:14.000Z" itemprop="datePublished">2020-12-23</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <h1 id="递归"><a href="#递归" class="headerlink" title="  递归 "></a><center>  递归 </center></h1><p>递归是一种技术，这种技术通过一个函数在执行过程中一次或多次调用其本身<br>递归函数的优点是定义简单，逻辑清晰。理论上，所有的递归函数都可以写成循环的方式，但循环的逻辑不如递归清晰。<br>使用递归函数需要注意防止栈溢出。在计算机中，函数调用是通过栈（stack）这种数据结构实现的，每当进入一个函数调用，栈就会加一层栈帧，每当函数返回，栈就会减一层栈帧。由于栈的大小不是无限的，所以，递归调用的次数过多，会导致栈溢出</p>
+<span id="more"></span>
+<p>递归 与 迭代 ：<br>递归即函数调用其本身，为树结构，为重复“递推”和“回归”的过程，当“递推”到达底部是就会开始往上层“回归”。<br>迭代是环结构，从初始状态开始，每次迭代都遍历这个环，并更新状态，多次迭代直到到达结束状态。<br><img src="https://p-066764.f2.n0.cdn.getcloudapp.com/items/OAuBrzBA/%E9%80%92%E5%BD%92%20%26%20%E8%BF%AD%E4%BB%A3.png?v=823734ff72183f6d1e39c7dd8b19d0e9"><br>说明性例子：<br><strong>阶乘函数</strong>：</p>
+<p>n！： n = 0时，n = 1； n&gt;= 1 时，n = n*(n-1)!</p>
+<p>代码实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">factorial</span>(<span class="params">n</span>):</span></span><br><span class="line">	<span class="keyword">if</span> n == <span class="number">0</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> n*factorial(n-<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>二分查找</strong>：该算法用于在一个含有n个元素的有序序列中有效定位目标值。<br>当序列无序时，寻找一个目标值的标准方法是使用循环来检查每一个元素，直到找到目标数据。这中算法的时间复杂度是O(n)<br>当序列有序并可以通过索引访问时，该算法维持两个参数low和high，首先令low = 0 和 high = n-1.然后我们比较目标值和中间值，即索引项[mid] = [(low+high)/2]</p>
+<p>考虑三种情况：<br>1：如果目标值等于[mid]，即查找成功并且终止。<br>2：如果目标值 小于[mid],即对前半部分重复这一过程，即索引的范围从low到 mid-1.<br>3：如果目标值 大于[mid],即对后半部分重新这一过程，即索引范围从[mid+1] 到high。<br>如果最终low大于high，则查找不成功。</p>
+<p>此算法被称为二分查找。其时间复杂度为O(log n).</p>
+<p>代码实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">binary_search</span>(<span class="params">data,target,low,high</span>):</span></span><br><span class="line">	<span class="keyword">if</span> low &gt; high:</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		mid = (low+high)//<span class="number">2</span></span><br><span class="line">		<span class="keyword">if</span> target == data[mid]:</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">		<span class="keyword">elif</span> target&lt; data[mid]:</span><br><span class="line"></span><br><span class="line">			<span class="keyword">return</span> binary_search(data,target,low,mid-<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			<span class="keyword">return</span> binary_search(data,target,mid+<span class="number">1</span>,high)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>递归算法的不足：</p>
+<p>一个低效的计算斐波那契数的递归算法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bad_fibonacci</span>(<span class="params">n</span>):</span></span><br><span class="line">	<span class="keyword">assert</span> n &gt;= <span class="number">0</span>, <span class="string">&quot;n &gt; 0&quot;</span></span><br><span class="line">	<span class="keyword">if</span> n&lt;= <span class="number">1</span>:</span><br><span class="line">		<span class="keyword">return</span> n</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> bad_fibonacci(n-<span class="number">2</span>) + bad_fibonacci(n-<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>使用线性递归计算第n个斐波那契数：<br>此递归每次调用只进行一次递归调用。时间复杂度O(n)。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">good_fibonacci</span>(<span class="params">n</span>):</span></span><br><span class="line">	<span class="keyword">if</span> n &lt;=<span class="number">1</span>:</span><br><span class="line">		<span class="keyword">return</span> (n,<span class="number">0</span>)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		(a,b) = good_fibonacci(n-<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">return</span> (a+b,a)</span><br></pre></td></tr></table></figure>
+<p>另一种方法：递增法，时间复杂度是 O(n)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci</span>(<span class="params">n</span>):</span></span><br><span class="line">	a,b = <span class="number">0</span>,<span class="number">1</span></span><br><span class="line">	<span class="keyword">if</span> n &lt;=<span class="number">1</span>:</span><br><span class="line">		<span class="keyword">return</span> (n)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>,n):</span><br><span class="line">			a,b = b,a+b</span><br><span class="line">		<span class="keyword">return</span> (a+b)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用生成器求第n位斐波那契数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci</span>(<span class="params"><span class="built_in">max</span></span>):</span></span><br><span class="line">	num,a,b = <span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span></span><br><span class="line">	<span class="keyword">while</span> num &lt;=<span class="built_in">max</span>:</span><br><span class="line">		<span class="keyword">yield</span> a</span><br><span class="line">		a,b = b,a+b</span><br><span class="line">		num += <span class="number">1</span> </span><br><span class="line">gen = fibonacci(<span class="number">10</span>)<span class="comment">#一个生成器</span></span><br><span class="line">可使用<span class="keyword">for</span>循环输出	</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>python中的最大递归深度默认为1000，也可以人为修改。<br>import sys<br>old =sys.getrecursionlimit() # 获取原来的迭代深度，默认1000<br>sys.setrecursionlimit(100000) # 将其修改为100000</p>
+<p>线性递归：一个递归调用最多开始一个其他递归调用<br>二路递归：如果一个递归调用最多开始两个其他递归调用。<br>多重递归：一个递归调用开始三个或更多其他递归调用</p>
+<p><strong>线性递归</strong>：</p>
+<p>元素序列的递归求和：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a =[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">12</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">8</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">linear_sum</span>(<span class="params">S,n</span>):</span></span><br><span class="line">	<span class="keyword">if</span> n== <span class="number">0</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> linear_sum(S,n-<span class="number">1</span>) + S[n-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<p>使用递归逆置序列：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a =[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">12</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">8</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reserve</span>(<span class="params">a,start,stop</span>):</span></span><br><span class="line">	<span class="keyword">if</span> start &lt; stop:</span><br><span class="line">		a[start],a[stop] = a[stop],a[start]</span><br><span class="line">		reserve(a,start+<span class="number">1</span>,stop-<span class="number">1</span>)</span><br><span class="line">reserve(a,<span class="number">0</span>,<span class="built_in">len</span>(a)-<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>二路递归</strong><br>使用二路递归计算一个序列的元素之和，递归的计算前一半元素总和和后一半元素的总和，然后这两个和相加在一起。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">binary_sum</span>(<span class="params">data,start,stop</span>):</span></span><br><span class="line">	<span class="keyword">if</span> start&gt;= stop:<span class="comment">#zero element</span></span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	<span class="keyword">elif</span> start == stop-<span class="number">1</span>: <span class="comment"># one element</span></span><br><span class="line">		<span class="keyword">return</span> data[start]	</span><br><span class="line">	<span class="keyword">else</span>:	</span><br><span class="line"></span><br><span class="line">		mid = (start+stop)//<span class="number">2</span> <span class="comment">#two or more element</span></span><br><span class="line">		<span class="keyword">return</span> binary_sum(data,start,mid) + binary_sum(data,mid,stop)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p>普通递归：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">recsum</span>(<span class="params">x</span>):</span></span><br><span class="line">  <span class="keyword">if</span> x == <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line">  <span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">return</span> x + recsum(x - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">recsum(<span class="number">5</span>)</span><br><span class="line"><span class="number">5</span> + recsum(<span class="number">4</span>)</span><br><span class="line"><span class="number">5</span> + (<span class="number">4</span> + recsum(<span class="number">3</span>))</span><br><span class="line"><span class="number">5</span> + (<span class="number">4</span> + (<span class="number">3</span> + recsum(<span class="number">2</span>)))</span><br><span class="line"><span class="number">5</span> + (<span class="number">4</span> + (<span class="number">3</span> + (<span class="number">2</span> + recsum(<span class="number">1</span>))))</span><br><span class="line"><span class="number">5</span> + (<span class="number">4</span> + (<span class="number">3</span> + (<span class="number">2</span> + <span class="number">1</span>)))</span><br><span class="line"><span class="number">5</span> + (<span class="number">4</span> + (<span class="number">3</span> + <span class="number">3</span>))</span><br><span class="line"><span class="number">5</span> + (<span class="number">4</span> + <span class="number">6</span>)</span><br><span class="line"><span class="number">5</span> + <span class="number">10</span></span><br><span class="line"><span class="number">15</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>尾递归：递归调用后就直接返回，这是真正的尾递归。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tailrecsum</span>(<span class="params">x, running_total=<span class="number">0</span></span>):</span></span><br><span class="line">  <span class="keyword">if</span> x == <span class="number">0</span>:</span><br><span class="line">    <span class="keyword">return</span> running_total</span><br><span class="line">  <span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">return</span> tailrecsum(x - <span class="number">1</span>, running_total + x)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">tailrecsum(<span class="number">5</span>, <span class="number">0</span>)</span><br><span class="line">tailrecsum(<span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line">tailrecsum(<span class="number">3</span>, <span class="number">9</span>)</span><br><span class="line">tailrecsum(<span class="number">2</span>, <span class="number">12</span>)</span><br><span class="line">tailrecsum(<span class="number">1</span>, <span class="number">14</span>)</span><br><span class="line">tailrecsum(<span class="number">0</span>, <span class="number">15</span>)</span><br><span class="line"><span class="number">15</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/23/python%20%E9%80%92%E5%BD%92/" data-id="ckxy6h9op000tusuw1zmj7p8d" class="article-share-link">
+        分享
+      </a>
+      
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2020/12/23/python%20%20@property%20Decorator/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      The @property Decorator in Python
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2020/10/25/BST/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">二叉树与二叉搜索树(BST)</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>Morty &copy; 2022</li>
+      
+        <li></li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="Morty"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">Home</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">Archives</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">Gallery</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">About</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>

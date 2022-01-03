@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  <meta name="description" content="Morty">
+  
+  <title>
+    python_tree |
+    
+    Morty
+  </title>
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="57x57" href="/icon/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/icon/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/icon/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/icon/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/icon/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/icon/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/icon/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon-180x180.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="/icon/apple-touch-icon-167x167.png">
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-python-tree" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h1 class="article-title" itemprop="name">
+  python_tree
+</h1>
+
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/12/python-tree/" class="article-date">
+  <time datetime="2020-07-12T02:05:57.000Z" itemprop="datePublished">2020-07-12</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <p> 树的定义和属性 </p>
+<p>树是一种将元素分层次存储的抽象数据类型。<br>最顶部元素为树根(root),除了最顶部的元素，每个元素在数中都有一个双亲节点和零个或者多个孩子节点。</p>
+<p>通常我们将数定义为存储一系列元素的有限节点集合：</p>
+<ul>
+<li>如果数T不为空，则它一定具有一个称为 根节点 的特殊节点，并且该节点没有父节点。</li>
+<li>每个非根节点V都具有唯一的父节点w，每个具有父节点w的节点都是节点w的一个孩子。</li>
+</ul>
+<p>有序树：如果数中每个节点的孩子节点都有特定的顺序，则称该树为有序树。我们将一个节点的孩子节点依次编号第一个，第二个，第三个等。通常我们按照从左到右的顺序对兄弟节点进行排序。</p>
+<span id="more"></span>
+
+<p> 树的抽象数据类型 </p>
+<p>我们用位置作为节点的抽象结构来定义树的抽象数据结构。<br>一棵树T的位置对象支持如下方法：</p>
+<ul>
+<li>p.element() : 返回存储在位置p中的元素</li>
+<li>T.root()  返回树T的根节点的位置，如果树为空，则返回None。</li>
+<li>T.is_root(p) 如果位置p是树T的根，则返回True</li>
+<li>T.parent(p) : 返回位置为p的父节点的位置。如果p的位置为树的根节点，则返回None。</li>
+<li>T.num_children(p) : 返回位置为p的孩子节点的编号。</li>
+<li>T.children(p) :产生位置为p的孩子节点的一个迭代。</li>
+<li>T.is_leaf(p) :如果位置p没有任何孩子，则返回None</li>
+<li>len(T) :返回树T所包含的元素的数量。</li>
+<li>T.is_empty() 如果树T不包含任何节点，则返回None</li>
+<li>T.positions() :生成树T的所有位置的迭代。</li>
+<li>iter(T) : 生成树T中存储的所有元素的迭代。</li>
+</ul>
+<p>树中的一个结点的高度是指从该结点到作为它的子孙的各叶结点的最长路径的长度。<br>从树根到任意结点n右唯一的一条路径，我们称这条路径的长度为结点n的深度或层数。根结点的深度为0，其余结点的深度为其父结点的深度加1.深度相同的结点属于同一层。</p>
+<p>深度：<br>假设p是树T中的一个节点，那么p的深度就是节点p的祖先的个数，不包含p本身。这种定义表明树的根节点的深度为0。p的深度同样也可以按如下递归定义：</p>
+<ul>
+<li>如果p是根节点，那么p的深度为0.</li>
+<li>否则，p的深度就是其父节点的深度加1</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">depth</span>(<span class="params">self,p</span>):</span></span><br><span class="line">	<span class="keyword">if</span> self.is_root(p):</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span> + self.depth(self.parent(p))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>高度：<br>树T中节点p的高度的定义如下：</p>
+<ul>
+<li>如果p是一个叶子节点，那么它的高度为0</li>
+<li>否则，p的高度是它孩子节点中的最大高度加1</li>
+</ul>
+<p>一棵非空树T的高度 等于 其所有叶子节点深度的最大值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_height1</span>(<span class="params">self</span>):</span></span><br><span class="line">	<span class="string">&quot;&quot;&quot;return the height of the tree&quot;&quot;&quot;</span></span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">max</span>(self.depth(p) <span class="keyword">for</span> p <span class="keyword">in</span> self.positions() <span class="keyword">if</span> self.is_leaf(p))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>不幸的是，该算法并不高效，self.positions()的算法的执行时间是O(n),其中n是树T中的节点个数。因为_height1算法针对每个叶子节点都调用了算法depth(p),在最坏情况下，算法_height1在最坏情况下的执行时间为o(n*n)</p>
+<p>改进版：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_height2</span>(<span class="params">self,p</span>):</span></span><br><span class="line">	<span class="keyword">if</span> self.is_leaf(p):</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>+ <span class="built_in">max</span>(self._height2(c) <span class="keyword">for</span> c <span class="keyword">in</span> self.children(p))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p> 二叉树 </p>
+<p>二叉树：</p>
+<ul>
+<li>每个节点最多有两个孩子节点。</li>
+<li>每个孩子节点被命名为左孩子和右孩子。</li>
+<li>对于每个节点的孩子节点，在顺序上，左孩子先于右孩子。</li>
+</ul>
+<p>若子树的根为内部节点v的左孩子或右孩子，则该子树相应地被称为节点v的左子树或右子树。</p>
+<p>A complete binary tree is a binary tree in which every level,except possibly the last,is completely filled,and all nodes are as far left as possible.</p>
+<p>完全二叉树（complete Binary Tree）是一个二叉树，若设二叉树深度为h，除第h层外，其他各层（1~h-1）的结点树都达到最大个数，第h层所有的结点都连续集中在最左边，这就是完全二叉树。</p>
+<p>满二叉树(full binary tree): 除叶子节点外，每个结点都有两个孩子。（叶子节点不一定在同一深度）</p>
+<p>完美二叉树（perfect binary tree）：是一个满二叉树，而且所有的叶子节点在同一深度。</p>
+<p>平衡二叉树(AVL):是带有平衡条件的二叉查找树，一颗AVL树是其每个节点的左子树和右子树的高（深）度最多差1的二叉查找树，空树的高度定义为-1.节点的平衡因子：该节点的左子树的深度减去它的右子树的深度，平衡二叉树所有节点的平衡因子只可能为-1，0，1.</p>
+<p>二叉树的抽象数据类型：</p>
+<p>二叉树是树的一种特殊化，支持3种额外的访问方法：</p>
+<ol>
+<li>T.left(p) :返回p左孩子的位置，若没有，返回None</li>
+<li>T.right(p) : 返回p右孩子的位置，若没有，则返回None</li>
+<li>T.sibling(p) :返回p兄弟节点的位置，若p没有兄弟节点，则返回None。</li>
+</ol>
+<p><strong>一个没有孩子的节点V 称为外部节点。一个有一个或多个孩子的节点V称为内部节点。</strong></p>
+<p>二叉树的属性：</p>
+<p>1: 在二叉树种，0层至多有一个节点（根节点），1层至多有两个节点（根节点的孩子），2层至多有4个节点，依次类推。<br>2: 设T为非空二叉树，n,ne,ni和h 分别表示T的节点数，外部节点数，内部节点数和高度，则T具有以下性质：<br>1)： h+1 &lt;= n &lt;= 2^(h+1) - 1<br>2):  1&lt;= ne &lt;= 2^h<br>3):  h &lt;= ni &lt;= 2^h -1<br>4):  log(n+1) -1 &lt;= h &lt;= n-1<br>3:若T为完全二叉树，则T具有如下性质：<br>1）：2h+1 &lt;= n &lt;= 2^(h+1) -1<br>2) : h+1 &lt;= ne &lt;= 2^h<br>3) : h&lt;= ni &lt;= 2^h -1<br>4) : log(n+1) -1 &lt;= h &lt;= (n-1)/2</p>
+<p>深度：对于任意节点n,n的深度为从根到n的唯一路径长，根的深度为0；<br>高度：对于任意节点n,n的高度为从n到一片树叶的最长路径长，所有树叶的高度为0；<br>结点的层次：规定根结点在1层，其它任一结点的层数是其父结点的层数加1<br>树的深度：树中所有结点中的最大层次是这棵树的深度</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">node</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,value= <span class="literal">None</span></span>):</span></span><br><span class="line">		self.value = value</span><br><span class="line">		self.left  = <span class="literal">None</span></span><br><span class="line">		self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">binary_search_tree</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">		self.root = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">insert</span>(<span class="params">self,value</span>):</span></span><br><span class="line">		<span class="keyword">if</span> self.root == <span class="literal">None</span>:</span><br><span class="line">			self.root = node(value)</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			self._insert(value,self.root)</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">_insert</span>(<span class="params">self,value,cur_node</span>):</span></span><br><span class="line">		<span class="keyword">if</span> value &lt; cur_node.value:</span><br><span class="line">			<span class="keyword">if</span> cur_node.left != <span class="literal">None</span>:</span><br><span class="line">				self._insert(value,cur_node.left)</span><br><span class="line">			<span class="keyword">else</span>:</span><br><span class="line">				cur_node.left = node(value)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">elif</span> value &gt; cur_node.value:</span><br><span class="line">			<span class="keyword">if</span> cur_node.right != <span class="literal">None</span>:</span><br><span class="line">				self._insert(value,cur_node.right)</span><br><span class="line">			<span class="keyword">else</span>:</span><br><span class="line">				cur_node.right = node(value)</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			<span class="built_in">print</span>(<span class="string">&#x27;this value is already exist&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">height</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">if</span> self.root !=  <span class="literal">None</span>:</span><br><span class="line">			<span class="keyword">return</span> self._height(self.root,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">else</span>:<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">_height</span>(<span class="params">self,cur_node,cur_height</span>):</span></span><br><span class="line">		<span class="keyword">if</span> cur_node == <span class="literal">None</span>:</span><br><span class="line">			<span class="keyword">return</span> cur_height</span><br><span class="line">		left_height = self._height(cur_node.left,cur_height+<span class="number">1</span>)</span><br><span class="line">		right_height = self._height(cur_node.right,cur_height+<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">max</span>(left_height,right_height)</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">search</span>(<span class="params">self,value</span>):</span></span><br><span class="line">		<span class="keyword">if</span> self.root != <span class="literal">None</span>:</span><br><span class="line">			<span class="keyword">return</span> self._search(value,self.root)</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">_search</span>(<span class="params">self,value,cur_node</span>):</span></span><br><span class="line">		<span class="keyword">if</span> value == cur_node.value:</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">		<span class="keyword">elif</span> value &lt; cur_node.value <span class="keyword">and</span> cur_node.left != <span class="literal">None</span>:</span><br><span class="line">			<span class="keyword">return</span> self._search(value,cur_node.left)</span><br><span class="line">		<span class="keyword">elif</span> value &gt; cur_node.value <span class="keyword">and</span> cur_node.right != <span class="literal">None</span>:</span><br><span class="line">			<span class="keyword">return</span> self._search(value,cur_node.right)</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">print_tree</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">if</span> self.root != <span class="literal">None</span>:</span><br><span class="line">			self._print_tree(self.root)</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">_print_tree</span>(<span class="params">self,cur_node</span>):</span></span><br><span class="line">		<span class="keyword">if</span> cur_node != <span class="literal">None</span>:</span><br><span class="line">			self._print_tree(cur_node.left)</span><br><span class="line">			<span class="built_in">print</span>(<span class="built_in">str</span>(cur_node.value))</span><br><span class="line">			self._print_tree(cur_node.right)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fill_tree</span>(<span class="params">tree,nums = <span class="number">10</span>,max_num =<span class="number">100</span></span>):</span></span><br><span class="line">	list1 = []</span><br><span class="line">	tree.insert(<span class="number">11</span>)</span><br><span class="line">	<span class="keyword">from</span> random <span class="keyword">import</span> randint</span><br><span class="line">	<span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(nums):</span><br><span class="line">		a = randint(<span class="number">0</span>,max_num)</span><br><span class="line">		list1.append(a)</span><br><span class="line">		tree.insert(a)</span><br><span class="line">	<span class="built_in">print</span>(list1)</span><br><span class="line">	<span class="keyword">return</span> tree</span><br><span class="line"></span><br><span class="line">tree = binary_search_tree()</span><br><span class="line">tree = fill_tree(tree)</span><br><span class="line">tree.print_tree()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;the height of this tree is:&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(tree.height()))</span><br><span class="line"><span class="built_in">print</span>(tree.search(<span class="number">11</span>))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&gt;</span><br><span class="line">this value <span class="keyword">is</span> already exist</span><br><span class="line">this value <span class="keyword">is</span> already exist</span><br><span class="line">[<span class="number">56</span>, <span class="number">31</span>, <span class="number">99</span>, <span class="number">88</span>, <span class="number">60</span>, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">2</span>, <span class="number">28</span>]</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">28</span></span><br><span class="line"><span class="number">31</span></span><br><span class="line"><span class="number">56</span></span><br><span class="line"><span class="number">60</span></span><br><span class="line"><span class="number">88</span></span><br><span class="line"><span class="number">99</span></span><br><span class="line">the height of this tree <span class="keyword">is</span>:<span class="number">5</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line">[Finished <span class="keyword">in</span> <span class="number">0.2</span>s]</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/07/12/python-tree/" data-id="ckxy6h9oq000vusuw6pskckat" class="article-share-link">
+        分享
+      </a>
+      
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2020/08/22/bilibili-data-structure/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      B站:data_structure
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2020/06/20/python%20linkedlist/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">链表</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>Morty &copy; 2022</li>
+      
+        <li></li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="Morty"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">Home</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">Archives</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">Gallery</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">About</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>
