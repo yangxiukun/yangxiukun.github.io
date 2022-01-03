@@ -1,289 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  
-  
-  
-  <meta name="description" content="Morty">
-  
-  <title>
-    python 基于数组的序列 |
-    
-    Morty
-  </title>
-  <!-- Icon -->
-  <link rel="apple-touch-icon" sizes="57x57" href="/icon/apple-touch-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/icon/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="/icon/apple-touch-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/icon/apple-touch-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="/icon/apple-touch-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="/icon/apple-touch-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="/icon/apple-touch-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon-180x180.png">
-  <link rel="apple-touch-icon" sizes="167x167" href="/icon/apple-touch-icon-167x167.png">
-  
-    <link rel="shortcut icon" href="/favicon.ico">
-    
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-  
-<script src="/js/pace.min.js"></script>
-
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head>
-
-<body>
-  <main class="content">
-    <section class="outer">
-  <article id="post-python数组序列" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-      
-
-<h1 class="article-title" itemprop="name">
-  python 基于数组的序列
-</h1>
+{% extends '_layout.swig' %}
+{% import '_macro/post.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
 
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-    </header>
-    
+{% block page_class %}page-post-detail{% endblock %}
 
-    
-    <div class="article-meta">
-      <a href="/2022/01/02/python%E6%95%B0%E7%BB%84%E5%BA%8F%E5%88%97/" class="article-date">
-  <time datetime="2022-01-02T05:45:50.360Z" itemprop="datePublished">2022-01-02</time>
-</a>
-      
+
+{% block content %}
+
+  <div id="posts" class="posts-expand">
+    {{ post_template.render(page) }}
+
+    <div class="post-spread">
+      {% if theme.jiathis %}
+        {% include '_partials/share/jiathis.swig' %}
+      {% elseif theme.baidushare %}
+        {% include '_partials/share/baidushare.swig' %}
+      {% elseif theme.add_this_id %}
+        {% include '_partials/share/add-this.swig' %}
+      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
+        {% include '_partials/share/duoshuo_share.swig' %}
+      {% endif %}
     </div>
-    
-
-    
-    
-<div class="tocbot"></div>
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-      
-      <p>python中各种类，即内嵌的列表类(list)，元组类(tuple)和字符串类(str),这些类之间有明显的共性，最主要的是：每个类都支持用下标访问序列元素，每个类都使用数组这种低层次概念表示序列。计算机系统拥有庞大的储存字节，为了能跟踪信息储存在哪个字节，计算机采用了一个抽象概念，即存储地址。计算机内存，其每个字节都被指定了连续的存储地址。我们认为存储器的任一单个字节被存储或检索的运行时间为O(1).<br>一组相关变量能够一个接一个地存储在计算机存储器的一块连续区域内。我们将这样的表示法称为 数组（Array）<br><strong>数组的每个单元必须占据相同数量的字节。之所以这样要求，是允许使用索引值能在常量单位内访问数组内的任一单元。</strong></p>
-<span id="more"></span>
-<h1 id="引用数组"><a href="#引用数组" class="headerlink" title="引用数组"></a>引用数组</h1><p>例子1 储存200个人的姓名清单，元素是字符串，它们串的长度显然不同。<br>[‘yang’,’xiu’,’kun’,….]<br>python如果用列表来表示，必须要满足数组的每个单元字节数都相同这一条件，会以最长字符串来为每一个单元预留足够的空间，但这样太浪费了。相反，python 使用数组内部存储机制(即对象引用，来表示一列或者元组实例。在最底层，储存的是一块连续的内存地址序列，这些地址指向一组元素序列。<br>即[0,1,2,3,4…] 这里数字 0 代表的是一个内存地址，此内存地址指向‘yang’.虽然每个字符串元素的相对大小可能不同，但每个元素存储地址的位数是固定的，在这种方法下，python可以通过索引值以常量时间访问元素列表或元组。<br>浅拷贝：创建的新列表与原列表指向同样的元素地址。<br>深拷贝： copy模块的deepcopy函数复制所有元素，得到一个具有全新元素的新列表，这种为深拷贝。<br>初始化一个数组：counters = [0]*8 即构造了一个长度为8，各个元素为0的列表，其8个单元指向同一个对象。<br>如果单独执行counters[2] += 1 只是将单元2执向了新的元素，另外7个单元不变。<br>extend命令可以将一个列表的元素添加到另一个列表的末尾。扩展列表的过程不是将那些元素复制过来，而是将元素的引用复制到末尾。</p>
-<h1 id="紧凑数组"><a href="#紧凑数组" class="headerlink" title="紧凑数组"></a>紧凑数组</h1><p>pass </p>
-<h1 id="动态数组"><a href="#动态数组" class="headerlink" title="动态数组"></a>动态数组</h1><p>在计算机系统中，创建低层次数组时，必须明确声明数组的大小，以便系统为其存储分配连续的内存。python的元组(tuple)或者字符串(str)实例的情形中，其底层数组的大小已经确定了。<br>动态数组：一张列表关联着一个底层数组，该数组通常比列表的长度更长。当持续添加列表元素，所有预留单元最终将被耗尽。此时，列表类向系统请求一个新的，更大的数组，并初始化该数组，使其前面部分能与原来的小数组一样。届时，原来的数组不再需要，因此被系统回收。</p>
-<p>实现动态数组：<br>当列表list1的大小已满时，而此时有新的元素要添加进列表，我们会执行一下步骤来克服其大小限制的缺点：</p>
-<ol>
-<li>分配具有更大容量的新数组 list2</li>
-<li>设置 list2[i] = list1[i] (i=0,1,2,…，n-1)，其中n是该项目的当前编号</li>
-<li>设置list1 = list2，也就是说，list2正在作为新的数组来引用我们的新列表。</li>
-<li>然后，只要将新的元素插入（添加）到我们的列表list1即可.</li>
-</ol>
-<p>使用ctypes模块提供的原始数组实现动态数组类：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ctypes</span><br><span class="line">a = (<span class="number">5</span>*ctypes.py_object)()</span><br></pre></td></tr></table></figure>
-
-<p>定义一个类DynamicArray ，方法__len__（返回长度）,__getitem__（获得元素）,append方法，_resize（进行扩展）,_make_array (进行初始化数组）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ctypes</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DynamicArray</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">		self._n = <span class="number">0</span>  <span class="comment">##实际的元素个数</span></span><br><span class="line">		self._capacity = <span class="number">1</span> <span class="comment">## 底层数组的大小</span></span><br><span class="line">		self._A = self._make_array() </span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__len__</span>(<span class="params">self</span>):</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> self._n <span class="comment">## 返回实际的元素个数</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span>(<span class="params">self,index</span>):</span></span><br><span class="line">		<span class="keyword">if</span> <span class="number">0</span>&lt;=index &lt;= self._n:</span><br><span class="line">			<span class="keyword">return</span> self._A[index] <span class="comment">## 如果索引在范围内，返回数值</span></span><br><span class="line">		<span class="keyword">raise</span> IndexError(<span class="string">&#x27;Invaid index&#x27;</span>) <span class="comment">## 否则，返回错误</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">append</span>(<span class="params">self,value</span>):</span></span><br><span class="line">		<span class="keyword">if</span> self._n == self._capacity: <span class="comment">## 当元素实际个数与底层数组长度相同时</span></span><br><span class="line">			self._resize()             <span class="comment">## 进行 底层数组的2倍扩展，</span></span><br><span class="line">		self._A[self._n] = value </span><br><span class="line">		self._n += <span class="number">1</span>	</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">_resize</span>(<span class="params">self</span>):</span></span><br><span class="line">		self._capacity = <span class="number">2</span>*self._capacity <span class="comment">## 新数组大小是已满旧数组的2倍大小</span></span><br><span class="line">		B = self._make_array() <span class="comment">## 生成新数组 B</span></span><br><span class="line">		<span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(self._n): <span class="comment">##将旧数组赋值到新数组对应索引位</span></span><br><span class="line">			B[k] = self._A[k]</span><br><span class="line">		self._A = B <span class="comment">#将数组B 替换掉 旧数组 </span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">_make_array</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">return</span> (self._capacity * ctypes.py_object)() <span class="comment">## 初始化底层数组</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="动态数组的摊销分析"><a href="#动态数组的摊销分析" class="headerlink" title="动态数组的摊销分析"></a>动态数组的摊销分析</h1><p><strong>摊销 ：改变数组大小的操作，有些情况下需要改变底层数组，所以需要进行摊销的操作</strong><br>根据以上程序，data.append(None)操作的时间复杂度不是每次都是O(1)，当底层数组已满时，进行data.append(None)操作，其时间复杂度就会变为O(n)，n为原来底层数组的大小。所以列表append操作的时间复杂度和底层数组的大小有关系，如果底层数组大小无限大，那append操作的时间复杂度就是O(1)，但是这样会占过多的内存，明显不可取。每次底层数组存满，创建一个多大的底层数组来替换原先的底层数组会很大程度地影响append的性能。我们需要在运行效率和内存使用之间选取有个折中的方案。</p>
-<h2 id="大小按几何增长"><a href="#大小按几何增长" class="headerlink" title="大小按几何增长"></a>大小按几何增长</h2><p>命题1:设S是一个由具有初始大小的动态数组实现的数组，实现策略为：当数组已满时，将此数组大小扩大为原来的两倍。S最初为空，对S连续执行n个增添操作的运行时间为O(n)。</p>
-<h2 id="避免使用等差数列"><a href="#避免使用等差数列" class="headerlink" title="避免使用等差数列"></a>避免使用等差数列</h2><p>命题2：设c&gt;0,表示每次调整数组大小时的固定增量。在连续的n个append 操作中，时间将会花费在分别初始化大小为c，2c，3c，…,mc 的数组上面，其中 m = n/c(往上取整） ，因此，总体运行时间将会正比于 c+2c+3c+…+mc。 因此，执行n个append操作花费的时间为Ω(n*n)。</p>
-<h2 id="内存使用和紧凑数组"><a href="#内存使用和紧凑数组" class="headerlink" title="内存使用和紧凑数组"></a>内存使用和紧凑数组</h2><p>假如一个容器，例如一张python列表，能够提供删除一个或多个元素的操作，那就更要注意确保动态数组占用O(n)的内存。风险是：重复的插入操作可能会导致底层数组肆意增大，当许多元素被删除后，元素的实际数量与数组大小之间便不存在正比关系。<br>有时，会对这种数据结构采用一种健壮的实现方式——————紧凑底层数组。在此期间，单个操作都保持O(1)的摊销绑定。然而，注意确保在扩充和收缩底层数组时，结构不能摊销(改变)，因为在这种情况下，摊销绑定将不能实现。</p>
-<p>程序：对DynamicArray类，实现pop方法，删除数组的最后一个元素，每当元素个数小于N/4 时，将数组大小缩小为原来的一半（N 为数组大小）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pop</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self._n == <span class="number">0</span>:</span><br><span class="line">            self._A[self._n-<span class="number">1</span>] == <span class="literal">None</span></span><br><span class="line">            self._n -= <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> self._n &lt;= self._capacity//<span class="number">4</span>:</span><br><span class="line">                self._capacity = self._capacity//<span class="number">2</span></span><br><span class="line">                self._resize (self._capacity)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>python 既不是使用纯粹的几何级数，也不是使用等差数列来扩展数组。<br>测量python 列表类增添操作的摊销花费：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count_average</span>(<span class="params">n</span>):</span></span><br><span class="line">    start = time()</span><br><span class="line">    data = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        data.append(<span class="literal">None</span>)</span><br><span class="line">    end = time()</span><br><span class="line">    cost = end - start</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;append <span class="subst">&#123;n&#125;</span> times ,cost average <span class="subst">&#123;cost/n&#125;</span> &quot;</span></span><br></pre></td></tr></table></figure>
-<p>每个count,index,<strong>contains</strong> 方法均是从左到右迭代遍历序列。当执行count 方法时，必须循环遍历整个序列，而index 和 <strong>contains</strong> 方法只有最坏的情况下才会检测n个元素。</p>
-<p><strong>向列表中增添元素：</strong>append方法在最坏情况下，因为底层数组需要调整，因此运行时间为Ω(n)，但在摊销情况下，运行时间为O(1)。<br>列表同样支持insert(k,value)这一方法，此方法将给定的值插入列表索引0&lt;= k &lt;= n 的位置，该位置通过将所有后续元素向前移动一个单元得到。 摊销运行时间O(n-k+1) </p>
-<p>对DynamicArray类insert方法的实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insert</span>(<span class="params">self,k,value</span>):</span></span><br><span class="line">	<span class="keyword">if</span> self._n == self._capacity:</span><br><span class="line">		self._resize(<span class="number">2</span>*self._capacity)</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self._n,k,-<span class="number">1</span>):</span><br><span class="line">		self._A[j] = self._A[j-<span class="number">1</span>]</span><br><span class="line">	self._A[k] = value</span><br><span class="line">	self._n += <span class="number">1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><strong>从列表中删除元素</strong> ： 带参数的方法pop(k)能够删除列表中索引为k&lt;n的元素，并把后续元素往左移动，以填补由删除操作导致的空缺。该操作的效率为O(n-k) 摊销，因为移动的数量取决于索引k的选择，pop(0)是最耗费时的，运行时间为Ω(n).remove 方法删除列表中第一次出现的指定值，对于remove操作，没有高效情况：每次都需要Ω(n)的运行时间，从列表开头进行搜索，直至找到索引k的值，而剩余的从k到最后的迭代用于往左移动元素。</p>
-<p>对DynamicArray类的remove方法的一种实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove</span>(<span class="params">self,value</span>):</span></span><br><span class="line">	<span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(self._n):</span><br><span class="line">		<span class="keyword">if</span> self._A[k] == value:</span><br><span class="line">			<span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(k,self._n -<span class="number">1</span>):</span><br><span class="line">				self._A[j] = self._A[j+<span class="number">1</span>]</span><br><span class="line">			self._A[self._n - <span class="number">1</span>]  = <span class="literal">None</span></span><br><span class="line">			self._n -= <span class="number">1</span></span><br><span class="line">			<span class="keyword">return</span> </span><br><span class="line">	<span class="keyword">raise</span> ValueError(<span class="string">&#x27;value not found&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>扩展列表： extend方法将一个列表中的元素增添到另一张列表的末尾，其相比于append方法更高效：首先合适的python方法总会有些优势，因为这些方法通常使用本地编译语言进行执行（不是用作解释python代码），其次与调用很多独立的函数相比，调用一个函数完成所有工作的开销更小。最后，extend方法可以提前算出更新列表的最终大小，重复调用append方法，底层动态数组会有多次调整大小的风险。</p>
-<h1 id="使用基于数组的序列"><a href="#使用基于数组的序列" class="headerlink" title="使用基于数组的序列"></a>使用基于数组的序列</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GameEntry</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,name,score</span>):</span></span><br><span class="line">        self._name = name</span><br><span class="line">        self._score = score</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_name</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._name</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_score</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._score</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;&#123;0&#125;,&#123;1&#125;&#x27;</span>.<span class="built_in">format</span>(self._name,self._score)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Scoreboard</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,capacity = <span class="number">3</span></span>):</span></span><br><span class="line">        self._board = [<span class="literal">None</span>]* capacity</span><br><span class="line">        self._n = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span>(<span class="params">self,k</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self._n == <span class="number">0</span> <span class="keyword">or</span> k&lt; <span class="number">0</span> <span class="keyword">or</span> k&gt;=self._n:</span><br><span class="line">            <span class="keyword">raise</span> IndexError (<span class="string">&#x27;Error&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> self._board[k]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;\n&#x27;</span>.join(<span class="built_in">str</span>(self._board[i]) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self._n))</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">self,entry</span>):</span></span><br><span class="line">        score = entry.get_score()</span><br><span class="line">        good = self._n &lt; <span class="built_in">len</span>(self._board) <span class="keyword">or</span> score&gt; self._board[-<span class="number">1</span>].get_score()</span><br><span class="line">        <span class="keyword">if</span> good:</span><br><span class="line">            <span class="keyword">if</span> self._n &lt; <span class="built_in">len</span>(self._board):</span><br><span class="line">                self._n += <span class="number">1</span></span><br><span class="line">            j = self._n -<span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> j&gt;<span class="number">0</span> <span class="keyword">and</span> self._board[j-<span class="number">1</span>].get_score() &lt; score:</span><br><span class="line">                self._board[j] = self._board[j-<span class="number">1</span>]</span><br><span class="line">                j -= <span class="number">1</span></span><br><span class="line">            self._board[j] = entry</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="多维数据集"><a href="#多维数据集" class="headerlink" title="多维数据集"></a>多维数据集</h1><p>初始化 二维列表： data = [[0]*c for j in range(r)]</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/01/02/python%E6%95%B0%E7%BB%84%E5%BA%8F%E5%88%97/" data-id="ckxyga2wh000v1guw504u6ikz" class="article-share-link">
-        分享
-      </a>
-      
-<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
-
-    </footer>
-
   </div>
 
-  
-  
-<nav class="article-nav">
-  
-  <a href="/2022/01/03/%E4%B8%B4%E5%BA%8A%E5%8C%96%E5%AD%A6%E5%AE%9A%E9%87%8F%E6%A3%80%E9%AA%8C%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD%E9%AA%8C%E8%AF%81/" class="article-nav-link">
-    <strong class="article-nav-caption">前一篇</strong>
-    <div class="article-nav-title">
-      
-      临床化学定量检验程序性能验证.md
-      
-    </div>
-  </a>
-  
-  
-  <a href="/2021/02/03/point/" class="article-nav-link">
-    <strong class="article-nav-caption">后一篇</strong>
-    <div class="article-nav-title">期权</div>
-  </a>
-  
-</nav>
+{% endblock %}
 
-  
+{% block sidebar %}
+  {{ sidebar_template.render(true) }}
+{% endblock %}
 
-  
-  
-  
-  
-
-</article>
-</section>
-    <footer class="footer">
-  <div class="outer">
-    <div class="float-right">
-      <ul class="list-inline">
-  
-  <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
-  
-  <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
-  
-</ul>
-    </div>
-    <ul class="list-inline">
-      <li>Morty &copy; 2022</li>
-      
-        <li></li>
-      
-      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
-      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
-    </ul>
-  </div>
-</footer>
-  </main>
-  <aside class="sidebar">
-    <button class="navbar-toggle"></button>
-<nav class="navbar">
-  
-  <div class="logo">
-    <a href="/"><img src="/images/hexo.svg" alt="Morty"></a>
-  </div>
-  
-  <ul class="nav nav-main">
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/">Home</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/archives">Archives</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/gallery">Gallery</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/about">About</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link nav-item-search" title="搜索">
-        <i class="fe fe-search"></i>
-        搜索
-      </a>
-    </li>
-  </ul>
-</nav>
-<nav class="navbar navbar-bottom">
-  <ul class="nav">
-    <li class="nav-item">
-      <div class="totop" id="totop">
-  <i class="fe fe-rocket"></i>
-</div>
-    </li>
-    <li class="nav-item">
-      
-      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
-        <i class="fe fe-feed"></i>
-      </a>
-      
-    </li>
-  </ul>
-</nav>
-<div class="search-form-wrap">
-  <div class="local-search local-search-plugin">
-  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
-  <div id="local-search-result" class="local-search-result"></div>
-</div>
-</div>
-  </aside>
-  
-<script src="/js/jquery-2.0.3.min.js"></script>
-
-
-<script src="/js/jquery.justifiedGallery.min.js"></script>
-
-
-<script src="/js/lazyload.min.js"></script>
-
-
-<script src="/js/busuanzi-2.3.pure.min.js"></script>
-
-
-
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-
-<script src="/js/tocbot.min.js"></script>
-
-
-<script>
-  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
-  tocbot.init({
-    tocSelector: '.tocbot',
-    contentSelector: '.article-entry',
-    headingSelector: 'h1, h2, h3, h4, h5, h6',
-    hasInnerContainers: true,
-    scrollSmooth: true,
-    positionFixedSelector: '.tocbot',
-    positionFixedClass: 'is-position-fixed',
-    fixedSidebarOffset: 'auto',
-  });
-</script>
-
-
-
-<script src="/js/ocean.js"></script>
-
-</body>
-
-</html>
+{% block script_extra %}
+  {% include '_scripts/pages/post-details.swig' %}
+{% endblock %}

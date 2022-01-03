@@ -1,295 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  
-  
-  
-  <meta name="description" content="Morty">
-  
-  <title>
-    python解析语法 |
-    
-    Morty
-  </title>
-  <!-- Icon -->
-  <link rel="apple-touch-icon" sizes="57x57" href="/icon/apple-touch-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/icon/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="/icon/apple-touch-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/icon/apple-touch-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="/icon/apple-touch-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="/icon/apple-touch-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="/icon/apple-touch-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon-180x180.png">
-  <link rel="apple-touch-icon" sizes="167x167" href="/icon/apple-touch-icon-167x167.png">
-  
-    <link rel="shortcut icon" href="/favicon.ico">
-    
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-  
-<script src="/js/pace.min.js"></script>
-
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head>
-
-<body>
-  <main class="content">
-    <section class="outer">
-  <article id="post-python解析语法" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-      
-
-<h1 class="article-title" itemprop="name">
-  python解析语法
-</h1>
+{% extends '_layout.swig' %}
+{% import '_macro/post.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
 
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-    </header>
-    
+{% block page_class %}page-post-detail{% endblock %}
 
-    
-    <div class="article-meta">
-      <a href="/2020/05/24/python%E8%A7%A3%E6%9E%90%E8%AF%AD%E6%B3%95/" class="article-date">
-  <time datetime="2020-05-24T04:48:50.000Z" itemprop="datePublished">2020-05-24</time>
-</a>
-      
+
+{% block content %}
+
+  <div id="posts" class="posts-expand">
+    {{ post_template.render(page) }}
+
+    <div class="post-spread">
+      {% if theme.jiathis %}
+        {% include '_partials/share/jiathis.swig' %}
+      {% elseif theme.baidushare %}
+        {% include '_partials/share/baidushare.swig' %}
+      {% elseif theme.add_this_id %}
+        {% include '_partials/share/add-this.swig' %}
+      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
+        {% include '_partials/share/duoshuo_share.swig' %}
+      {% endif %}
     </div>
-    
-
-    
-    
-<div class="tocbot"></div>
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-      
-      <p>Comprehensions in Python provide us with a short and concise way to construct new sequences (such as lists, set, dictionary etc.) using sequences which have been already defined. (一种简短且简洁的方法，使用已经定义的序列来构造新序列)<br>Python supports the following 4 types of comprehensions:</p>
-<ol>
-<li>List Comprehensions:      [ ]</li>
-<li>Dictionary Comprehensions:{ key:value }</li>
-<li>Set Comprehensions       :{ }</li>
-<li>Generator Comprehensions :( )</li>
-</ol>
-<span id="more"></span>
-<h1 id="list-comprehensions"><a href="#list-comprehensions" class="headerlink" title="list comprehensions"></a>list comprehensions</h1><p>List comprehensions ：It consists of square brackets containing an expression followed by a for clause, then zero or more for or if clauses. The expressions can be anything, meaning you can put in all kinds of objects in lists. The result would be a new list made after the evaluation of the expression in context of the if and for clauses.</p>
-<pre><code>output_list = [output_exp for var in input_list if (var satisfies this condition)]
-</code></pre>
-<p>例题1：输出列表中的偶数<br>普通方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">0</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]</span><br><span class="line">results = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> list1：</span><br><span class="line">	<span class="keyword">if</span> i%<span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">		results.append(i)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>使用列表解析式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">0</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]</span><br><span class="line">results = [ i <span class="keyword">for</span> i <span class="keyword">in</span> list1 <span class="keyword">if</span> i%<span class="number">2</span> == <span class="number">0</span>]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>例题2：输出（1-10）数字的平方。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">results = [ i*i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">11</span>)]</span><br></pre></td></tr></table></figure>
-<p>例题3：获取文本中所有单词的第1个字符</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">text=<span class="string">&quot;My house is full of flowers&quot;</span></span><br><span class="line">first_charts = [word[<span class="number">0</span>] <span class="keyword">for</span> word <span class="keyword">in</span> text.split()]</span><br></pre></td></tr></table></figure>
-
-<p>例4：获取两个列表对应位的乘积</p>
-<p>a=[2,3,4,5];b=[3,4,5,6],想要得到a，b对应位的乘积</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list_a=[<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>] </span><br><span class="line">list_b=[<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">results = [a*b <span class="keyword">for</span> a,b <span class="keyword">in</span> <span class="built_in">zip</span>(list_a,list_b)]</span><br></pre></td></tr></table></figure>
-<p>例题5：获取一个全为0列表</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">results = [<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>)]</span><br><span class="line"><span class="comment">#[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]</span></span><br></pre></td></tr></table></figure>
-
-
-<h1 id="Dictionary-Comprehensions"><a href="#Dictionary-Comprehensions" class="headerlink" title="Dictionary Comprehensions"></a>Dictionary Comprehensions</h1><pre><code>output_dict = &#123;key:value for (key, value) in iterable if (key, value satisfy this condition)&#125;
-</code></pre>
-<p>例题1：已有列表，输出以其位置索引为key，元素为value 的字典</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="string">&#x27;yang&#x27;</span>,<span class="string">&#x27;xiu&#x27;</span>,<span class="string">&#x27;kun&#x27;</span>]</span><br><span class="line">dict1  =&#123;&#125;</span><br><span class="line"><span class="keyword">for</span> key,value <span class="keyword">in</span> <span class="built_in">enumerate</span>(a):</span><br><span class="line">	dict1[key] = value</span><br><span class="line"><span class="comment">#&#123;0: &#x27;yang&#x27;, 1: &#x27;xiu&#x27;, 2: &#x27;kun&#x27;&#125;</span></span><br></pre></td></tr></table></figure>
-<p>使用字典解析式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="string">&#x27;yang&#x27;</span>,<span class="string">&#x27;xiu&#x27;</span>,<span class="string">&#x27;kun&#x27;</span>]</span><br><span class="line">dict1 = &#123;key:value <span class="keyword">for</span> key,value <span class="keyword">in</span> <span class="built_in">enumerate</span>(a)&#125;</span><br></pre></td></tr></table></figure>
-<p>例题2：已有字典，将其key 为同一字母(无论大小写)的值相加。<br>Python 字典(Dictionary) get() 函数返回指定键的值，如果值不在字典中返回默认值<br>dict.get(key, default=None)</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mcase = &#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">34</span>, <span class="string">&#x27;A&#x27;</span>: <span class="number">7</span>, <span class="string">&#x27;Z&#x27;</span>: <span class="number">3</span>&#125;</span><br><span class="line">mcase_frequency = &#123;</span><br><span class="line">    k.lower(): mcase.get(k.lower(), <span class="number">0</span>) + mcase.get(k.upper(), <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> mcase.keys()</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(mcase_frequency)</span><br><span class="line"><span class="comment">#&#123;&#x27;a&#x27;: 17, &#x27;b&#x27;: 34, &#x27;z&#x27;: 3&#125;</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="set-comprehensions"><a href="#set-comprehensions" class="headerlink" title="set comprehensions"></a>set comprehensions</h1><p>Set comprehensions are pretty similar to list comprehensions. The only difference between them is that set comprehensions use curly brackets { }</p>
-<p>例题1：已有列表，创建仅包含一个输入列表中存在的偶数的输出集。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">input_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">6</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">7</span>] </span><br><span class="line">output_list = <span class="built_in">set</span>()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> input_list:</span><br><span class="line">	<span class="keyword">if</span> i%<span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">		output_list.add(i)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(output_list)</span><br><span class="line"><span class="comment"># &#123;2, 4, 6&#125;</span></span><br></pre></td></tr></table></figure>
-<p>使用set集合表达式</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">input_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">6</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">7</span>] </span><br><span class="line">output_list = &#123;i <span class="keyword">for</span> i <span class="keyword">in</span> input_list <span class="keyword">if</span> i%<span class="number">2</span> == <span class="number">0</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(output_list)</span><br></pre></td></tr></table></figure>
-
-<h1 id="generator-comprehensions"><a href="#generator-comprehensions" class="headerlink" title="generator comprehensions"></a>generator comprehensions</h1><p>They are also similar to list comprehensions. The only difference is that they don’t allocate memory for the whole list but generate one item at a time, thus more memory efficient.唯一的区别是他们不为整个列表分配内存，而是一次生成一个项目，因此内存使用效率更高，使用（）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">multiples_gen = (i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">30</span>) <span class="keyword">if</span> i % <span class="number">3</span> == <span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(multiples_gen)</span><br><span class="line"><span class="comment"># Output: &lt;generator object &lt;genexpr&gt; at 0x7fdaa8e407d8&gt;</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> multiples_gen:</span><br><span class="line">  <span class="built_in">print</span>(x)</span><br><span class="line">  <span class="comment"># Outputs numbers</span></span><br></pre></td></tr></table></figure>
-<p>Choose Generators for Large Datasets：当遇到大数量集时使用生成器<br>如计算1000000之内所有数字的平方和</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">sum</span>(i*i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000000</span>)))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/05/24/python%E8%A7%A3%E6%9E%90%E8%AF%AD%E6%B3%95/" data-id="ckxyga2wk000z1guw3xnv5hq2" class="article-share-link">
-        分享
-      </a>
-      
-<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
-
-    </footer>
-
   </div>
 
-  
-  
-<nav class="article-nav">
-  
-  <a href="/2020/06/07/leetcode-easy/" class="article-nav-link">
-    <strong class="article-nav-caption">前一篇</strong>
-    <div class="article-nav-title">
-      
-      Python Leetcode
-      
-    </div>
-  </a>
-  
-  
-  <a href="/2020/05/24/python%20%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%92%8C%E7%94%9F%E6%88%90%E5%99%A8/" class="article-nav-link">
-    <strong class="article-nav-caption">后一篇</strong>
-    <div class="article-nav-title">python 迭代器和生成器</div>
-  </a>
-  
-</nav>
+{% endblock %}
 
-  
+{% block sidebar %}
+  {{ sidebar_template.render(true) }}
+{% endblock %}
 
-  
-  
-  
-  
-
-</article>
-</section>
-    <footer class="footer">
-  <div class="outer">
-    <div class="float-right">
-      <ul class="list-inline">
-  
-  <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
-  
-  <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
-  
-</ul>
-    </div>
-    <ul class="list-inline">
-      <li>Morty &copy; 2022</li>
-      
-        <li></li>
-      
-      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
-      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
-    </ul>
-  </div>
-</footer>
-  </main>
-  <aside class="sidebar">
-    <button class="navbar-toggle"></button>
-<nav class="navbar">
-  
-  <div class="logo">
-    <a href="/"><img src="/images/hexo.svg" alt="Morty"></a>
-  </div>
-  
-  <ul class="nav nav-main">
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/">Home</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/archives">Archives</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/gallery">Gallery</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/about">About</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link nav-item-search" title="搜索">
-        <i class="fe fe-search"></i>
-        搜索
-      </a>
-    </li>
-  </ul>
-</nav>
-<nav class="navbar navbar-bottom">
-  <ul class="nav">
-    <li class="nav-item">
-      <div class="totop" id="totop">
-  <i class="fe fe-rocket"></i>
-</div>
-    </li>
-    <li class="nav-item">
-      
-      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
-        <i class="fe fe-feed"></i>
-      </a>
-      
-    </li>
-  </ul>
-</nav>
-<div class="search-form-wrap">
-  <div class="local-search local-search-plugin">
-  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
-  <div id="local-search-result" class="local-search-result"></div>
-</div>
-</div>
-  </aside>
-  
-<script src="/js/jquery-2.0.3.min.js"></script>
-
-
-<script src="/js/jquery.justifiedGallery.min.js"></script>
-
-
-<script src="/js/lazyload.min.js"></script>
-
-
-<script src="/js/busuanzi-2.3.pure.min.js"></script>
-
-
-
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-
-<script src="/js/tocbot.min.js"></script>
-
-
-<script>
-  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
-  tocbot.init({
-    tocSelector: '.tocbot',
-    contentSelector: '.article-entry',
-    headingSelector: 'h1, h2, h3, h4, h5, h6',
-    hasInnerContainers: true,
-    scrollSmooth: true,
-    positionFixedSelector: '.tocbot',
-    positionFixedClass: 'is-position-fixed',
-    fixedSidebarOffset: 'auto',
-  });
-</script>
-
-
-
-<script src="/js/ocean.js"></script>
-
-</body>
-
-</html>
+{% block script_extra %}
+  {% include '_scripts/pages/post-details.swig' %}
+{% endblock %}

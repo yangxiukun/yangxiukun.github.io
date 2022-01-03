@@ -1,315 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  
-  
-  
-  <meta name="description" content="Morty">
-  
-  <title>
-    链表 |
-    
-    Morty
-  </title>
-  <!-- Icon -->
-  <link rel="apple-touch-icon" sizes="57x57" href="/icon/apple-touch-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/icon/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="/icon/apple-touch-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/icon/apple-touch-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="/icon/apple-touch-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="/icon/apple-touch-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="/icon/apple-touch-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon-180x180.png">
-  <link rel="apple-touch-icon" sizes="167x167" href="/icon/apple-touch-icon-167x167.png">
-  
-    <link rel="shortcut icon" href="/favicon.ico">
-    
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-  
-<script src="/js/pace.min.js"></script>
-
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head>
-
-<body>
-  <main class="content">
-    <section class="outer">
-  <article id="post-python linkedlist" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-      
-
-<h1 class="article-title" itemprop="name">
-  链表
-</h1>
+{% extends '_layout.swig' %}
+{% import '_macro/post.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
 
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-    </header>
-    
+{% block page_class %}page-post-detail{% endblock %}
 
-    
-    <div class="article-meta">
-      <a href="/2020/06/20/python%20linkedlist/" class="article-date">
-  <time datetime="2020-06-20T08:30:08.000Z" itemprop="datePublished">2020-06-20</time>
-</a>
-      
+
+{% block content %}
+
+  <div id="posts" class="posts-expand">
+    {{ post_template.render(page) }}
+
+    <div class="post-spread">
+      {% if theme.jiathis %}
+        {% include '_partials/share/jiathis.swig' %}
+      {% elseif theme.baidushare %}
+        {% include '_partials/share/baidushare.swig' %}
+      {% elseif theme.add_this_id %}
+        {% include '_partials/share/add-this.swig' %}
+      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
+        {% include '_partials/share/duoshuo_share.swig' %}
+      {% endif %}
     </div>
-    
-
-    
-    
-<div class="tocbot"></div>
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-      
-      <p>list类明显缺点：</p>
-<ul>
-<li>一个动态数组的长度可能超过实际存储数组元素所需的长度</li>
-<li>在实时系统中对操作的摊销边界是不可接受的</li>
-<li>在一个数组内部执行插入和删除的操作的代价太高</li>
-</ul>
-<p>本章介绍链表的数据结构，链表依赖于更多的分布式表示方法，称为节点Node，每个节点维护一个指向它的元素引用。</p>
-<span id="more"></span>
-<h1 id="单向链表"><a href="#单向链表" class="headerlink" title="单向链表"></a>单向链表</h1><p>单向链表是一个由多个节点集合组成的线性序列。链表的第一个和最后一个节点分别为头节点和尾节点。每个节点被表示为唯一的对象，该对象实例存储着指向其元素成员的引用和指向下一个节点的引用(或者为空)。<br>链表实例至少必须包含一个指向链表头节点的引用，最好也显式地保存一个指向尾节点的引用，可以避免为了访问尾节点而遍历整个链表，也可以保存一定数量的节点总数(通常为列表的大小)，单向链表一个重要属性是免疫预先确定的大小。</p>
-<h2 id="在单向链表头部插入一个元素"><a href="#在单向链表头部插入一个元素" class="headerlink" title="在单向链表头部插入一个元素"></a>在单向链表头部插入一个元素</h2><p>伪代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Algorithm add_first(L,e):</span><br><span class="line">	newest = Node(e) <span class="comment">#将元素e 创建成节点形式</span></span><br><span class="line">	newest.<span class="built_in">next</span> = L.head <span class="comment"># 将此节点的next 指向链表的原头部</span></span><br><span class="line">	L.head = newest <span class="comment">#将新节点设置为头部</span></span><br><span class="line">	L.size += <span class="number">1</span> <span class="comment"># 链表大小加1</span></span><br></pre></td></tr></table></figure>
-<h2 id="在单向链表尾部插入一个元素"><a href="#在单向链表尾部插入一个元素" class="headerlink" title="在单向链表尾部插入一个元素"></a>在单向链表尾部插入一个元素</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Algorithm add_last(L,e):</span><br><span class="line">	newest = Node(e)</span><br><span class="line">	newest.<span class="built_in">next</span> = <span class="literal">None</span></span><br><span class="line">	L.tail.<span class="built_in">next</span> = newest</span><br><span class="line">	L.tail = newest</span><br><span class="line">	L.size += <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="从单向链表中删除一个元素"><a href="#从单向链表中删除一个元素" class="headerlink" title="从单向链表中删除一个元素"></a>从单向链表中删除一个元素</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Algorithm remove_first(L):</span><br><span class="line">	<span class="keyword">if</span> L.head <span class="keyword">is</span> <span class="literal">None</span> then</span><br><span class="line">		Indicate an error: the <span class="built_in">list</span> <span class="keyword">is</span> empty.</span><br><span class="line">	L.head = L.head.<span class="built_in">next</span></span><br><span class="line">	L.size = L.size -<span class="number">1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>即使保存了直接指向链表尾节点的尾指针，我们也不能轻易删除单向链表的尾节点。为了删除链表的最后一个节点，我们必须能访问尾节点之前的节点。但我们无法通过尾节点的‘next’指针找到尾节点的前一个节点，一个方法是从头部遍历，但这样需要很长时间，另一个方法是双向链表（见下面）</p>
-<h1 id="用单向链表实现栈"><a href="#用单向链表实现栈" class="headerlink" title="用单向链表实现栈"></a>用单向链表实现栈</h1><p>创建一个轻量级的_Node类，定义为非公有。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinkedStack</span>:</span>  </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">_Node</span>:</span></span><br><span class="line">        __slots__ = <span class="string">&#x27;_element&#x27;</span>,<span class="string">&#x27;_next&#x27;</span> <span class="comment">##精简内存使用</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,element,<span class="built_in">next</span></span>):</span></span><br><span class="line">            self._element  = element</span><br><span class="line">            self._<span class="built_in">next</span> = <span class="built_in">next</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self._head = <span class="literal">None</span></span><br><span class="line">        self._size = <span class="number">0</span>    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size == <span class="number">0</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span>(<span class="params">self,e</span>):</span></span><br><span class="line">        self._head = self._Node(e,self._head)</span><br><span class="line">        self._size += <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">top</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Stack is Empty!!&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self._head._element</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Stack is Empty&quot;</span></span><br><span class="line">        answer = self._head._element</span><br><span class="line">        self._head = self._head._<span class="built_in">next</span></span><br><span class="line">        self._size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> answer</span><br><span class="line">	</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>__ slots __:</p>
-<p>在Python中，每个类都有实例属性。默认情况下Python用一个字典来保存一个对象的实例属性,这个字典浪费了很多内存。因此如果你创建许多对象（我指的是成千上万个），它会消耗掉很多内存,__ slots __ 可以限制类的属性。  __ slots __ = (‘name’, ‘age’) # 用tuple定义允许绑定的属性名称，即此类中只可以定义 name，age 属性。</p>
-<h1 id="用单向链表实现队列"><a href="#用单向链表实现队列" class="headerlink" title="用单向链表实现队列"></a>用单向链表实现队列</h1><p>先进先出，方法 is_empty(),first(),dequeue(),enqueue(),__ len __</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinkedQueue</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">_Node</span>:</span></span><br><span class="line">        __slots__ = <span class="string">&#x27;_element&#x27;</span>,<span class="string">&#x27;_next&#x27;</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,element,<span class="built_in">next</span></span>):</span></span><br><span class="line">            self._element = element</span><br><span class="line">            self._<span class="built_in">next</span> = <span class="built_in">next</span></span><br><span class="line">            </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self._head = <span class="literal">None</span></span><br><span class="line">        self._tail = <span class="literal">None</span></span><br><span class="line">        self._size = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size == <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">first</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Queue is Empty!!!&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self._head._element</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dequeue</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Queue is Empty!!!&quot;</span></span><br><span class="line">        answer = self._head._element</span><br><span class="line">        self._head = self._head._<span class="built_in">next</span></span><br><span class="line">        self._size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            self._tail = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">return</span> answer</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">enqueue</span>(<span class="params">self,e</span>):</span></span><br><span class="line">        newest = self._Node(e,<span class="literal">None</span>)</span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            self._head = newest</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self._tail._<span class="built_in">next</span> = newest</span><br><span class="line">        self._tail = newest</span><br><span class="line">        self._size += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="循环链表"><a href="#循环链表" class="headerlink" title="循环链表"></a>循环链表</h1><p>在链表中使尾部节点的’next’指向链表的头部，由此获得一个循环链表。<br>虽然一个循环链表可能并没有开始或结束节点，但是必须为一个特定的节点维护一个引用，这样才能使用该链表，我们采用”current“ 标识符来表示一个指定的节点，通过 currnet = current.next ，来遍历链表各个节点。</p>
-<p>轮转调度：在这个调度程序中，以循环的方式迭代遍历一个元素的集合，并通过执行一个给定的动作为集合中的每个元素进行‘服务’。</p>
-<h2 id="用循环链表实现队列"><a href="#用循环链表实现队列" class="headerlink" title="用循环链表实现队列"></a>用循环链表实现队列</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">circlequeue</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">_Node</span>:</span></span><br><span class="line">        __slots__ = <span class="string">&#x27;_element&#x27;</span>,<span class="string">&#x27;_next&#x27;</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,element,<span class="built_in">next</span></span>):</span></span><br><span class="line">            self._element = element</span><br><span class="line">            self._<span class="built_in">next</span> = <span class="built_in">next</span></span><br><span class="line">            </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self._tail =<span class="literal">None</span></span><br><span class="line">        self._size = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size == <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">first</span> (<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;circle queue is empty&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self._tail._<span class="built_in">next</span>._element</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dequeue</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="comment">#删除队列头部</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;circle queue is empty&quot;</span></span><br><span class="line">        oldhead = self._tail._<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">if</span> self._size == <span class="number">1</span>:<span class="comment">## 队列只有一个元素</span></span><br><span class="line">            self._tail = <span class="literal">None</span> <span class="comment">## 清空队列</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self._tail._<span class="built_in">next</span> = oldhead._<span class="built_in">next</span> <span class="comment"># 越过队列 旧头部</span></span><br><span class="line">        self._size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> oldhead._element</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">enqueue</span>(<span class="params">self,e</span>):</span></span><br><span class="line">        newest = self._Node(e,Node) <span class="comment">#生成新节点</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():<span class="comment">#如果原始队列为空，将新节点指向其本身。</span></span><br><span class="line">            newest._<span class="built_in">next</span> = newest</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            newest._<span class="built_in">next</span> = self._tail._<span class="built_in">next</span> <span class="comment"># 将新节点指向队列头部</span></span><br><span class="line">        self._tail = newest <span class="comment"># 将新节点设置为尾节点</span></span><br><span class="line">        self._size += <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rotate</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self._size&gt; <span class="number">0</span> :</span><br><span class="line">            self._tail = self._tail._<span class="built_in">next</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h1><p>定义一个链表：每个节点都维护指向其前节点以及后节点的引用，这样的结构称为 双向链表。这样在任意位置插入和删除节点，其时间复杂度都为O(1)。 使用“next”表示指向当前节点对后继节点的引用，使用“prev”引用表示其前节点。</p>
-<p>头哨兵和尾哨兵：<br>在操作接近一个双向链表的边界时，为了避免一些特殊的情况，在链表的两端都追加节点是很有用的：在列表的起始位置添加头节点(header),在列表的结尾位置添加尾节点（tailer），这些节点并不存储主序列中的元素。当初始化哨兵节点时，一个空链表需要初始化，使头节点的“next”指向尾节点，并令尾节点“prev”指向头节点。</p>
-<h2 id="双向链表实现"><a href="#双向链表实现" class="headerlink" title="双向链表实现"></a>双向链表实现</h2><p>用于双向链表的python_Node类</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_Node</span>:</span></span><br><span class="line">	__sltos__= <span class="string">&#x27;_next&#x27;</span>,<span class="string">&#x27;_prev&#x27;</span>,<span class="string">&#x27;_element&#x27;</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,element</span>):</span></span><br><span class="line">		self._element = element</span><br><span class="line">		self._<span class="built_in">next</span> = <span class="built_in">next</span></span><br><span class="line">		self._prev = prev</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>创建一个双向链表，其维护_size成员以及公有成员 <strong>len</strong> 和 is_empty 。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_DoublyLinkedBase</span>:</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">_Node</span>:</span></span><br><span class="line">        __slots__ = <span class="string">&#x27;_next&#x27;</span>,<span class="string">&#x27;_prev&#x27;</span>,<span class="string">&#x27;_element&#x27;</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,element,prev,<span class="built_in">next</span></span>):</span></span><br><span class="line">            self._<span class="built_in">next</span> = <span class="built_in">next</span></span><br><span class="line">            self._prev = prev</span><br><span class="line">            self._element = element</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self._header = self._Node(<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>)</span><br><span class="line">        self._trailer = self._Node(<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>)</span><br><span class="line">        self._size = <span class="number">0</span></span><br><span class="line">        self._header._<span class="built_in">next</span> = self._trailer</span><br><span class="line">        self._trailer._prev = self._header</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size == <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_insert_between</span>(<span class="params">self,e,predecessor,successor</span>):</span></span><br><span class="line">        newest = self._Node(e,predecessor,successor)</span><br><span class="line">        predecessor._<span class="built_in">next</span> = newest</span><br><span class="line">        successor._prev = newest</span><br><span class="line">        self._size += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> newest</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_delete_node</span>(<span class="params">self,node</span>):</span></span><br><span class="line">        predecessor = node._prev <span class="comment">#记录要删除节点的前节点predecessor</span></span><br><span class="line">        successor =node._<span class="built_in">next</span>   <span class="comment"># 记录要删除节点的后节点successor</span></span><br><span class="line">        predecessor._<span class="built_in">next</span> = successor <span class="comment"># 将前节点predecessor next属性指向 后节点 successor</span></span><br><span class="line">        successor._prev = predecessor  <span class="comment">#将要删除节点的 后节点 prev属性 指向 前节点 predecessor</span></span><br><span class="line">        self._size -= <span class="number">1</span></span><br><span class="line">        element = node._element <span class="comment">#记录所删除的元素，并后续返回。</span></span><br><span class="line">        node._prev = node._<span class="built_in">next</span> =node._element =  <span class="literal">None</span> <span class="comment">## 将删除的节点置为None，该操作有利于python垃圾回收。</span></span><br><span class="line">        <span class="keyword">return</span> element</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        a = self._header</span><br><span class="line">        s = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self._size):</span><br><span class="line">            s.append(<span class="built_in">str</span>(a._<span class="built_in">next</span>._element))</span><br><span class="line">            a =a._<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">str</span>(s)  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>执行：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">A =  _DoublyLinkedBase()</span><br><span class="line"></span><br><span class="line">a1 = A._insert_between (<span class="number">1</span>,A._header,A._trailer)</span><br><span class="line">a2 = A._insert_between (<span class="number">2</span>,a1,A._trailer)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(A) <span class="comment">### [&#x27;1&#x27;,&#x27;2&#x27;]</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="双向链表实现双端队列"><a href="#双向链表实现双端队列" class="headerlink" title="双向链表实现双端队列"></a>双向链表实现双端队列</h2><p>实现 first(),last(),insert_first(),insert_last(),delete_first(),delete_last()</p>
-<p>继承上面程序 _DoublyLinkedBase 来实现链式双端队列：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinkedDeque</span>(<span class="params">_DoublyLinkedBase</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">first</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Empty&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self._header._<span class="built_in">next</span>._element</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">last</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Empty &quot;</span></span><br><span class="line">        <span class="keyword">return</span> self._trailer._prev._element</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">insert_first</span>(<span class="params">self,e</span>):</span></span><br><span class="line">        self._insert_between(e,self._header,self._header._<span class="built_in">next</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">insert_last</span>(<span class="params">self,e</span>):</span></span><br><span class="line">        self._insert_between(e,self._trailer._prev,self._trailer)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete_first</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;error,Emptry&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self._delete_node(self._header._<span class="built_in">next</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete_last</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Error,Empty!!&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self._delete_node(self._trailer._prev)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="位置列表的抽象数据类型"><a href="#位置列表的抽象数据类型" class="headerlink" title="位置列表的抽象数据类型"></a>位置列表的抽象数据类型</h2><p>设计一个抽象数据类型了尾用户提供一种可以定位到序列中任何元素的方法，并且能够执行任意位置的插入和删除操作。<br>在处理数组的序列时，整数索引提供了一种很好的方式来描述一个元素的位置，或者描述一个即将发生插入和删除操作的位置，然而，数字索引并不适用于描述一个链表内部的位置，因为我们不能有效访问一个只知道其索引的条目。找到链表中一个给定索引的元素，需要从链表的开始或结束的位置逐个遍历从而计算出目标元素的位置。<br>引入一个独立的位置抽象表示列表中一个元素的位置，而不是直接依赖于节点。<br><strong>含位置信息的列表抽象数据类型</strong></p>
-<ul>
-<li>p.element() 返回存储在位置p的元素</li>
-<li>L.first()   返回L中第一个元素的位置，如果L为空，则返回None</li>
-<li>L.last()    返回L中最后一个元素的位置，如果L为空，则返回None</li>
-<li>L.before(p) 返回L中p紧邻的前面元素的位置，如果p为第一个元素，则返回None</li>
-<li>L.after(p)  返回L中p紧邻的后面元素的位置，如果p为最后一个元素，则返回None</li>
-<li>L.is_empty()如果L中不含任何元素，返回True</li>
-<li>len(L)      返回元素的个数</li>
-<li>iter(L)     返回列表元素的前向迭代器。</li>
-<li>L.add_first(e),L.add_last(e) 插入新元素e，返回新元素的位置。</li>
-<li>L.add_before(p,e),L.add_after(p,e) 在位置p的前面/后面 插入新元素e，返回新元素的位置。</li>
-<li>L.replace(p,e) 用元素e取代位置p处的元素，返回p位置处之前的元素</li>
-<li>L.delete(p) 删除并且返回L中位置p处的元素，取消该位置。</li>
-</ul>
-<p>双向链表的实现：<br>基于双向链表的Positionlist类：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PositionalList</span>(<span class="params">_DoublyLinkedBase</span>):</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Position</span>:</span></span><br><span class="line">		 <span class="string">&quot;&quot;&quot;An abstraction representing the location of a single element.&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,container,node</span>):</span></span><br><span class="line">            self._container = container</span><br><span class="line">            self._node = node</span><br><span class="line">            </span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">element</span>(<span class="params">self</span>):</span></span><br><span class="line">			<span class="string">&quot;&quot;&quot; return the element stored at this position&quot;&quot;&quot;</span></span><br><span class="line">            <span class="keyword">return</span> self._node._element</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__eq__</span>(<span class="params">self,other</span>):</span></span><br><span class="line">			<span class="string">&quot;&quot;&quot; return True if other is a Position representing the same location &quot;&quot;&quot;</span></span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">type</span>(other) <span class="keyword">is</span> <span class="built_in">type</span>(self) <span class="keyword">and</span> other._node <span class="keyword">is</span> self._node</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__ne__</span>(<span class="params">self,other</span>):</span></span><br><span class="line">			<span class="string">&quot;&quot;&quot; return True if other does not representing the same location&quot;&quot;&quot;</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">not</span>(self == other)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_validate</span>(<span class="params">self,p</span>):</span></span><br><span class="line">		<span class="string">&quot;&quot;&quot; return position&#x27;s node, or raise appropriate error if invalid&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(p,self.Position):</span><br><span class="line">            <span class="keyword">raise</span> TypeError(<span class="string">&#x27;P must be proper Position type&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> p._container <span class="keyword">is</span> <span class="keyword">not</span> self:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&#x27;P does not belong to this container&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> p._node._<span class="built_in">next</span> <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError (<span class="string">&#x27;P is no longer valid&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> p._node</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_make_position</span>(<span class="params">self,node</span>):</span></span><br><span class="line">        <span class="keyword">if</span> node <span class="keyword">is</span> self._header <span class="keyword">or</span> node <span class="keyword">is</span> self._trailer:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> self.Positon(self,node)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">first</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._make_positon(self._header._<span class="built_in">next</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">last</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._make_postion(self._trailer._prev)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">before</span>(<span class="params">self,p</span>):</span></span><br><span class="line">        node = self._validate(p)</span><br><span class="line">        <span class="keyword">return</span> self._make_postion(node._<span class="built_in">next</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span>(<span class="params">self</span>):</span></span><br><span class="line">        cur = self.first()</span><br><span class="line">        <span class="keyword">while</span> cur <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">yield</span> cur.element()</span><br><span class="line">            cur = self.after(cur)</span><br><span class="line">            </span><br><span class="line">            </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_insert_between</span>(<span class="params">self,e,predecessor,successor</span>):</span></span><br><span class="line">        node = <span class="built_in">super</span>()._insert_between(e,predecessor,successor)</span><br><span class="line">        <span class="keyword">return</span> self._make_position(node)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_first</span>(<span class="params">self,e</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._insert_between(e,self._header,self._header._<span class="built_in">next</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_last</span>(<span class="params">self,e</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._insert_between(e,self._trailer._prev,self._trailer)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_before</span>(<span class="params">self,p,e</span>):</span></span><br><span class="line">        original = self._validate(p)</span><br><span class="line">        <span class="keyword">return</span> self._insert_between(e,original._prev,original)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_after</span>(<span class="params">self,p,e</span>):</span></span><br><span class="line">        original = self._validate(p)</span><br><span class="line">        <span class="keyword">return</span> self._insert_between(e,original,original._<span class="built_in">next</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete</span>(<span class="params">self,p</span>):</span></span><br><span class="line">        original = self._validate(p)</span><br><span class="line">        <span class="keyword">return</span> self._delete_node(original)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">replace</span>(<span class="params">self,p,e</span>):</span></span><br><span class="line">        original = self._validate(p)</span><br><span class="line">        old_value = original._element</span><br><span class="line">        original._element = e</span><br><span class="line">        <span class="keyword">return</span> old_value</span><br><span class="line">        </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>练习：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">doublelinkedlist</span>:</span></span><br><span class="line"></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">_Node</span>:</span></span><br><span class="line">		<span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,element,prev,<span class="built_in">next</span></span>):</span></span><br><span class="line">			self._element =element</span><br><span class="line">			self._prev = prev</span><br><span class="line">			self._<span class="built_in">next</span> = <span class="built_in">next</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">		self._header = self._Node(<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>)</span><br><span class="line">		self._trailer = self._Node(<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>)</span><br><span class="line">		self._header._<span class="built_in">next</span> = self._trailer</span><br><span class="line">		self._trailer._prev = self._header</span><br><span class="line">		self._size = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__len__</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">return</span> self._size</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">is_empty</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">return</span> self._size == <span class="number">0</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">first</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">if</span> self.is_empty ():</span><br><span class="line">			<span class="keyword">return</span> <span class="string">&quot;Empty!!&quot;</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> self._header._<span class="built_in">next</span>._element</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">last</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">if</span> self.is_empty():</span><br><span class="line">			<span class="keyword">return</span> <span class="string">&quot;Empty&quot;</span></span><br><span class="line">		<span class="keyword">return</span> self._trailer._prev._element</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">insert_first</span>(<span class="params">self,e</span>):</span></span><br><span class="line">		old = self._header._<span class="built_in">next</span></span><br><span class="line">		newest = self._Node(e,self._header,old)</span><br><span class="line">		old._prev = newest</span><br><span class="line">		self._header._<span class="built_in">next</span> = newest</span><br><span class="line">		self._size += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">insert_last</span>(<span class="params">self,e</span>):</span></span><br><span class="line">		old = self._trailer._prev</span><br><span class="line">		newest = self._Node(e,old,self._trailer)</span><br><span class="line">		old._<span class="built_in">next</span> = newest</span><br><span class="line">		self._trailer._prev = newest</span><br><span class="line">		self._size += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">delete_first</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">if</span> self.is_empty():</span><br><span class="line">			<span class="keyword">raise</span> Exception( <span class="string">&quot;Error ,this is Empty&quot;</span>)</span><br><span class="line">		</span><br><span class="line">		node = self._header._<span class="built_in">next</span></span><br><span class="line">		answer = node._element</span><br><span class="line">		self._header._<span class="built_in">next</span> = node._<span class="built_in">next</span></span><br><span class="line">		node._<span class="built_in">next</span>._prev = self._header</span><br><span class="line">		self._size -= <span class="number">1</span>	 </span><br><span class="line">		node._prev = node._<span class="built_in">next</span> = node._element = <span class="literal">None</span></span><br><span class="line">		<span class="keyword">return</span> answer</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">delete_last</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">if</span> self.is_empty():</span><br><span class="line">			<span class="keyword">raise</span> Exception( <span class="string">&quot;Error ,this is Empty&quot;</span>)</span><br><span class="line">		last = self._trailer._prev</span><br><span class="line">		last._prev._<span class="built_in">next</span> = self._trailer</span><br><span class="line">		self._trailer._prev = last._prev</span><br><span class="line">		self._size -= <span class="number">1</span></span><br><span class="line">		answer = last._element</span><br><span class="line">		last._prev = last._<span class="built_in">next</span> = last._element</span><br><span class="line">		<span class="keyword">return</span> answer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">		header = self._header._<span class="built_in">next</span></span><br><span class="line">		strs = []</span><br><span class="line">		<span class="keyword">while</span> header._element <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">			strs.append(header._element)</span><br><span class="line">			header = header._<span class="built_in">next</span></span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">str</span>(strs)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="基于链表的序列和基于数组的序列"><a href="#基于链表的序列和基于数组的序列" class="headerlink" title="基于链表的序列和基于数组的序列"></a>基于链表的序列和基于数组的序列</h1><p>基于数组的序列的优点：</p>
-<p><strong>数组提供时间复杂度为O(1)的基于整数索引的访问一个元素的方法。</strong><br>对于任意k值 以时间复杂度O(1)访问第K个元素是一个数组的优点。相应地，在一个链表中定位第K个元素要从起始位置遍历列表，其时间复杂度为O(k),如果是反向遍历链表，其时间复杂度为O(n-k).<br><strong>通常，具有等效边界的操作 使用基于数组的结构运行一个常数因子比基于链表的结构运行更有效率</strong></p>
-<p><strong>相较于链式结构，基于数组的表示所有存储的比例更小</strong></p>
-<p>基于链表的序列的优点：</p>
-<p><strong>基于链表的结构为它们的操作提供更坏情况的时间界限</strong><br>即如果数据结构操作用于一个实时系统，旨在提供更迅速的反应(如，操作系统，Web服务器，空中交通控制系统），则单(摊销）操作导致的长时间延迟可能有不利影响。</p>
-<p><strong>基于链表的结构支持在任意位置进行时间复杂度为O(1)的插入和删除操作</strong></p>
-<p>对于想要快速访问数据，不经常有插入和删除元素的时候，选择数组<br>对于需要经常的插入和删除元素，而对访问元素时的效率没有很高要求的化，选择链表。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/06/20/python%20linkedlist/" data-id="ckxyga2wv001h1guwey02f88r" class="article-share-link">
-        分享
-      </a>
-      
-<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
-
-    </footer>
-
   </div>
 
-  
-  
-<nav class="article-nav">
-  
-  <a href="/2020/06/25/%E6%B3%B0%E5%B1%B1/" class="article-nav-link">
-    <strong class="article-nav-caption">前一篇</strong>
-    <div class="article-nav-title">
-      
-      泰山
-      
-    </div>
-  </a>
-  
-  
-  <a href="/2020/06/14/python%20%E6%A0%88,%E9%98%9F%E5%88%97%E5%92%8C%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97/" class="article-nav-link">
-    <strong class="article-nav-caption">后一篇</strong>
-    <div class="article-nav-title">栈，队列和双端队列</div>
-  </a>
-  
-</nav>
+{% endblock %}
 
-  
+{% block sidebar %}
+  {{ sidebar_template.render(true) }}
+{% endblock %}
 
-  
-  
-  
-  
-
-</article>
-</section>
-    <footer class="footer">
-  <div class="outer">
-    <div class="float-right">
-      <ul class="list-inline">
-  
-  <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
-  
-  <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
-  
-</ul>
-    </div>
-    <ul class="list-inline">
-      <li>Morty &copy; 2022</li>
-      
-        <li></li>
-      
-      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
-      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
-    </ul>
-  </div>
-</footer>
-  </main>
-  <aside class="sidebar">
-    <button class="navbar-toggle"></button>
-<nav class="navbar">
-  
-  <div class="logo">
-    <a href="/"><img src="/images/hexo.svg" alt="Morty"></a>
-  </div>
-  
-  <ul class="nav nav-main">
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/">Home</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/archives">Archives</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/gallery">Gallery</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/about">About</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link nav-item-search" title="搜索">
-        <i class="fe fe-search"></i>
-        搜索
-      </a>
-    </li>
-  </ul>
-</nav>
-<nav class="navbar navbar-bottom">
-  <ul class="nav">
-    <li class="nav-item">
-      <div class="totop" id="totop">
-  <i class="fe fe-rocket"></i>
-</div>
-    </li>
-    <li class="nav-item">
-      
-      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
-        <i class="fe fe-feed"></i>
-      </a>
-      
-    </li>
-  </ul>
-</nav>
-<div class="search-form-wrap">
-  <div class="local-search local-search-plugin">
-  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
-  <div id="local-search-result" class="local-search-result"></div>
-</div>
-</div>
-  </aside>
-  
-<script src="/js/jquery-2.0.3.min.js"></script>
-
-
-<script src="/js/jquery.justifiedGallery.min.js"></script>
-
-
-<script src="/js/lazyload.min.js"></script>
-
-
-<script src="/js/busuanzi-2.3.pure.min.js"></script>
-
-
-
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-
-<script src="/js/tocbot.min.js"></script>
-
-
-<script>
-  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
-  tocbot.init({
-    tocSelector: '.tocbot',
-    contentSelector: '.article-entry',
-    headingSelector: 'h1, h2, h3, h4, h5, h6',
-    hasInnerContainers: true,
-    scrollSmooth: true,
-    positionFixedSelector: '.tocbot',
-    positionFixedClass: 'is-position-fixed',
-    fixedSidebarOffset: 'auto',
-  });
-</script>
-
-
-
-<script src="/js/ocean.js"></script>
-
-</body>
-
-</html>
+{% block script_extra %}
+  {% include '_scripts/pages/post-details.swig' %}
+{% endblock %}

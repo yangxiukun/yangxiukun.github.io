@@ -1,313 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  
-  
-  
-  <meta name="description" content="Morty">
-  
-  <title>
-    Python Decorators 浅析 |
-    
-    Morty
-  </title>
-  <!-- Icon -->
-  <link rel="apple-touch-icon" sizes="57x57" href="/icon/apple-touch-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/icon/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="/icon/apple-touch-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/icon/apple-touch-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="/icon/apple-touch-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="/icon/apple-touch-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="/icon/apple-touch-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon-180x180.png">
-  <link rel="apple-touch-icon" sizes="167x167" href="/icon/apple-touch-icon-167x167.png">
-  
-    <link rel="shortcut icon" href="/favicon.ico">
-    
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-  
-<script src="/js/pace.min.js"></script>
-
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head>
-
-<body>
-  <main class="content">
-    <section class="outer">
-  <article id="post-Python-Decorators" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-      
-
-<h1 class="article-title" itemprop="name">
-  Python Decorators 浅析
-</h1>
+{% extends '_layout.swig' %}
+{% import '_macro/post.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
 
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-    </header>
-    
+{% block page_class %}page-post-detail{% endblock %}
 
-    
-    <div class="article-meta">
-      <a href="/2020/05/10/Python-Decorators/" class="article-date">
-  <time datetime="2020-05-10T01:46:56.000Z" itemprop="datePublished">2020-05-10</time>
-</a>
-      
+
+{% block content %}
+
+  <div id="posts" class="posts-expand">
+    {{ post_template.render(page) }}
+
+    <div class="post-spread">
+      {% if theme.jiathis %}
+        {% include '_partials/share/jiathis.swig' %}
+      {% elseif theme.baidushare %}
+        {% include '_partials/share/baidushare.swig' %}
+      {% elseif theme.add_this_id %}
+        {% include '_partials/share/add-this.swig' %}
+      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
+        {% include '_partials/share/duoshuo_share.swig' %}
+      {% endif %}
     </div>
-    
-
-    
-    
-<div class="tocbot"></div>
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-      
-      <p>来源：<a target="_blank" rel="noopener" href="http://https//realpython.com/primer-on-python-decorators/">https://realpython.com/primer-on-python-decorators/</a></p>
-<p><strong>A decorator is a function that takes another function and extends the behavior of the latter function without explicitly modifying it.</strong><br>(装饰器是一个函数，它接收另一个函数，无需显式修改，而是可以扩展其函数功能)</p>
-<span id="more"></span>
-<h2 id="First-Class-Objects-第一类对象"><a href="#First-Class-Objects-第一类对象" class="headerlink" title="First-Class Objects 第一类对象"></a>First-Class Objects 第一类对象</h2><p>In Python, functions are first-class objects. This means that functions can be passed around and used as arguments, just like any other object (string, int, float, list, and so on). Consider the following three functions:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">say_hello</span>(<span class="params">name</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Hello <span class="subst">&#123;name&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">be_awesome</span>(<span class="params">name</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Yo <span class="subst">&#123;name&#125;</span>, together we are the awesomest!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet_bob</span>(<span class="params">greeter_func</span>):</span></span><br><span class="line">    <span class="keyword">return</span> greeter_func(<span class="string">&quot;Bob&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p>say_hello() 和 be_awesome() 需要传入string。而greet_bob()函数期望一个函数作为参数传入，我们可以将say_hello()，be_awesome() 传入。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>greet_bob(say_hello)</span><br><span class="line"><span class="string">&#x27;Hello Bob&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>greet_bob(be_awesome)</span><br><span class="line"><span class="string">&#x27;Yo Bob, together we are the awesomest!&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>The say_hello function is named without parentheses(括号）. This means that only a reference to the function is passed. The function is not executed.</p>
-<h2 id="Inner-Functions-内部函数"><a href="#Inner-Functions-内部函数" class="headerlink" title="Inner Functions  内部函数"></a>Inner Functions  内部函数</h2><p>It’s possible to define functions inside other functions. Such functions are called inner functions. Here’s an example of a function with two inner functions:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parent</span>():</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Printing from the parent() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">first_child</span>():</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Printing from the first_child() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">second_child</span>():</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Printing from the second_child() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    second_child()</span><br><span class="line">    first_child()</span><br></pre></td></tr></table></figure>
-<p>当我们调用 parent() 输出情况如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>parent()</span><br><span class="line">Printing <span class="keyword">from</span> the parent() function</span><br><span class="line">Printing <span class="keyword">from</span> the second_child() function</span><br><span class="line">Printing <span class="keyword">from</span> the first_child() function</span><br></pre></td></tr></table></figure>
-<p>Whenever you call parent(), the inner functions first_child() and second_child() are also called. But because of their local scope, they are not available outside of the parent() function.</p>
-<h2 id="Returning-Functions-From-Functions"><a href="#Returning-Functions-From-Functions" class="headerlink" title="Returning Functions From Functions"></a>Returning Functions From Functions</h2><p>Python also allows you to use functions as return values. The following example returns one of the inner functions from the outer parent() function:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parent</span>(<span class="params">num</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">first_child</span>():</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Hi, I am Emma&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">second_child</span>():</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Call me Liam&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> first_child</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> second_child</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>first = parent(<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>second = parent(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>first</span><br><span class="line">&lt;function parent.&lt;<span class="built_in">locals</span>&gt;.first_child at <span class="number">0x7f599f1e2e18</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>second</span><br><span class="line">&lt;function parent.&lt;<span class="built_in">locals</span>&gt;.second_child at <span class="number">0x7f599dad5268</span>&gt;</span><br></pre></td></tr></table></figure>
-<p>The somewhat cryptic output simply means that the first variable refers to the local first_child() function inside of parent(), while second points to second_child().</p>
-<p>You can now use first and second as if they are regular functions, even though the functions they point to can’t be accessed directly</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>first()</span><br><span class="line"><span class="string">&#x27;Hi, I am Emma&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>second()</span><br><span class="line"><span class="string">&#x27;Call me Liam&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="Simple-Decorators"><a href="#Simple-Decorators" class="headerlink" title="Simple Decorators"></a>Simple Decorators</h2><p>Let’s start with an example:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span>():</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening before the function is called.&quot;</span>)</span><br><span class="line">        func()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening after the function is called.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">say_whee</span>():</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Whee!&quot;</span>)</span><br><span class="line"></span><br><span class="line">say_whee = my_decorator(say_whee)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>执行say_whee() :</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>say_whee()</span><br><span class="line">Something <span class="keyword">is</span> happening before the function <span class="keyword">is</span> called.</span><br><span class="line">Whee!</span><br><span class="line">Something <span class="keyword">is</span> happening after the function <span class="keyword">is</span> called.</span><br></pre></td></tr></table></figure>
-<p>The so-called decoration happens at the following line:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">say_whee = my_decorator(say_whee)</span><br></pre></td></tr></table></figure>
-<p>In effect, the name say_whee now points to the wrapper() inner function. Remember that you return wrapper as a function when you call my_decorator(say_whee) ,say_whee函数指向 内部函数wrapper(),当我们调用my_decorator(say_whee)时返回函数wrapper:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>say_whee</span><br><span class="line">&lt;function my_decorator.&lt;<span class="built_in">locals</span>&gt;.wrapper at <span class="number">0x7f3c5dfd42f0</span>&gt;</span><br></pre></td></tr></table></figure>
-<p>However, wrapper() has a reference to the original say_whee() as func, and calls that function between the two calls to print().</p>
-<p>Put simply: <b>decorators wrap a function, modifying its behavior.</b>装饰器包装一个函数，修改其行为</p>
-<h2 id="Syntactic-Sugar-语法糖"><a href="#Syntactic-Sugar-语法糖" class="headerlink" title="Syntactic Sugar!(语法糖)"></a>Syntactic Sugar!(语法糖)</h2><p>Python allows you to use decorators in a simpler way with the @ symbol，The following example does the exact same thing as the first decorator example:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span>():</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening before the function is called.&quot;</span>)</span><br><span class="line">        func()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening after the function is called.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@my_decorator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">say_whee</span>():</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Whee!&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p>So, @my_decorator is just an easier way of saying say_whee = my_decorator(say_whee). It’s how you apply a decorator to a function.</p>
-<h2 id="Reusing-Decorators-装饰器的复用-amp-Decorating-Functions-With-Arguments"><a href="#Reusing-Decorators-装饰器的复用-amp-Decorating-Functions-With-Arguments" class="headerlink" title="Reusing Decorators(装饰器的复用) &amp; Decorating Functions With Arguments"></a>Reusing Decorators(装饰器的复用) &amp; Decorating Functions With Arguments</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">wrapper_do_twice</span>(<span class="params">*args,**kwargs</span>):</span></span><br><span class="line">		func(*args,**kwargs)</span><br><span class="line">		func(*args,**kwargs)</span><br><span class="line">	<span class="keyword">return</span> wrapper_do_twice</span><br><span class="line"><span class="meta">@my_decorator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">say_whee</span>(<span class="params">name</span>):</span></span><br><span class="line">	<span class="built_in">print</span> (<span class="string">&#x27;hello&#x27;</span>,name)</span><br><span class="line">say_whee(<span class="string">&#x27;Yang&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p><font color="#009966"> * args and ** kwargs in the inner wrapper function. Then it will accept an arbitrary number of positional and keyword arguments.</font><br>When you run this example, you should see that the original say_whee() is executed twice:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>say_whee(<span class="string">&#x27;Yang&#x27;</span>)</span><br><span class="line">hello Yang</span><br><span class="line">hello Yang</span><br></pre></td></tr></table></figure>
-
-<h2 id="Returning-Values-From-Decorated-Functions"><a href="#Returning-Values-From-Decorated-Functions" class="headerlink" title="Returning Values From Decorated Functions"></a>Returning Values From Decorated Functions</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">wrapper_do_twice</span>(<span class="params">*arg,**kwags</span>):</span></span><br><span class="line"></span><br><span class="line">		func(*arg,**kwags)</span><br><span class="line">		func(*arg,**kwags)</span><br><span class="line">	<span class="keyword">return</span> wrapper_do_twice</span><br><span class="line"><span class="meta">@my_decorator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">say_hello</span>(<span class="params">name</span>):</span></span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;Creating greeting&quot;</span>)</span><br><span class="line">	<span class="keyword">return</span> (<span class="string">&#x27;hello&#x27;</span>,name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"><span class="built_in">print</span>(say_hello(<span class="string">&#x27;yang&#x27;</span>))</span><br><span class="line">Creating greeting</span><br><span class="line">Creating greeting</span><br><span class="line"><span class="literal">None</span></span><br><span class="line">~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>程序输出了None ，显然不是太好，wrapper_do_twice() 函数没有返回值，所以say_hello(‘yang’)返回了None<br>the wrapper_do_twice() doesn’t explicitly return a value, the call  say_hello(‘yang’) ended up returning  None<br>To fix this, you need to make sure the wrapper function returns the return value of the decorated function:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">wrapper_do_twice</span>(<span class="params">*arg,**kwags</span>):</span></span><br><span class="line">		<span class="string">&#x27;this is wraaper_do_twice function&#x27;</span></span><br><span class="line">		func(*arg,**kwags)</span><br><span class="line">		<span class="keyword">return</span> func(*arg,**kwags)</span><br><span class="line">	<span class="keyword">return</span> wrapper_do_twice</span><br><span class="line"><span class="meta">@my_decorator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">say_hello</span>(<span class="params">name</span>):</span></span><br><span class="line">	<span class="string">&#x27;this is say_hello function &#x27;</span></span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;Creating greeting&quot;</span>)</span><br><span class="line">	<span class="keyword">return</span> <span class="string">f&#x27;hello <span class="subst">&#123;name&#125;</span>&#x27;</span></span><br><span class="line">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line">&gt;&gt;&gt;say_hello(<span class="string">&#x27;yang&#x27;</span>)</span><br><span class="line">Creating greeting</span><br><span class="line">Creating greeting</span><br><span class="line">hello yang</span><br></pre></td></tr></table></figure>
-<p>问题点 ： say_hello() 经过装饰后会丢失原有函数信息。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;say_hello.__name__</span><br><span class="line">wrapper_do_twice</span><br><span class="line">&gt;&gt;&gt;say_hello.__doc__</span><br><span class="line">this <span class="keyword">is</span> wraaper_do_twice function</span><br></pre></td></tr></table></figure>
-<p>解决方法是引入 装饰器 @functools.wraps： </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line"><span class="meta">	@functools.wraps(<span class="params">func</span>)</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">wrapper_do_twice</span>(<span class="params">*arg,**kwags</span>):</span></span><br><span class="line">		<span class="string">&#x27;this is wraaper_do_twice function&#x27;</span></span><br><span class="line">		func(*arg,**kwags)</span><br><span class="line">		<span class="keyword">return</span> func(*arg,**kwags)</span><br><span class="line">	<span class="keyword">return</span> wrapper_do_twice</span><br><span class="line"><span class="meta">@my_decorator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">say_hello</span>(<span class="params">name</span>):</span></span><br><span class="line">	<span class="string">&#x27;this is say_hello function &#x27;</span></span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;Creating greeting&quot;</span>)</span><br><span class="line">	<span class="keyword">return</span> <span class="string">f&#x27;hello <span class="subst">&#123;name&#125;</span>&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>现在经 @functools.wraps 装饰后：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;say_hello.__name__</span><br><span class="line">say_hello</span><br><span class="line">&gt;&gt;&gt;say_hello.__doc__</span><br><span class="line">this <span class="keyword">is</span> say_hello function</span><br></pre></td></tr></table></figure>
-<h2 id="Decorators-With-Arguments"><a href="#Decorators-With-Arguments" class="headerlink" title="Decorators With Arguments"></a>Decorators With Arguments</h2><p>Sometimes, it’s useful to pass arguments to your decorators. For instance, @do_twice could be extended to a @repeat(num_times) decorator. The number of times to execute the decorated function could then be given as an argument.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">repeat</span>(<span class="params">num_times</span>):</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line"><span class="meta">		@functools.wraps(<span class="params">func</span>)</span></span><br><span class="line">		<span class="function"><span class="keyword">def</span> <span class="title">wrapper_do_twice</span>(<span class="params">*arg,**kwags</span>):</span></span><br><span class="line">			<span class="string">&#x27;this is wraaper_do_twice function&#x27;</span></span><br><span class="line">			<span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span> (num_times):</span><br><span class="line">				func(*arg,**kwags)		</span><br><span class="line">		<span class="keyword">return</span> wrapper_do_twice</span><br><span class="line">	<span class="keyword">return</span> my_decorator</span><br><span class="line"><span class="meta">@repeat(<span class="params"><span class="number">4</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">say_hello</span>(<span class="params">name</span>):</span></span><br><span class="line">	<span class="string">&#x27;this is say_hello function &#x27;</span></span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;Creating greeting&quot;</span>,name)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;say_hello(<span class="string">&#x27;wang&#x27;</span>)</span><br><span class="line">Creating greeting wang</span><br><span class="line">Creating greeting wang</span><br><span class="line">Creating greeting wang</span><br><span class="line">Creating greeting wang</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="类中的装饰器"><a href="#类中的装饰器" class="headerlink" title="类中的装饰器"></a>类中的装饰器</h2><p>一个例子：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Blog</span>():</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,name,title</span>):</span></span><br><span class="line">		self.author = name</span><br><span class="line">		self.article = title</span><br><span class="line">		self.information = self.author + <span class="string">&#x27; &#x27;</span> + self.article</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">url</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">return</span> <span class="string">f&#x27;The author url is<span class="subst">&#123;self.author&#125;</span>.<span class="subst">&#123;self.article&#125;</span>.com&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>即定义了个Blog类，其中包含 author，article，information 属性，并拥有一个url方法。<br>创建一个实例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>user = Blog(<span class="string">&#x27;liuzaoqi&#x27;</span>,<span class="string">&#x27;python&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>创建了一个user，来打印一下其属性：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;<span class="built_in">print</span>(user.author)</span><br><span class="line"><span class="comment">#liuzaoqi</span></span><br><span class="line">&gt;&gt;&gt;<span class="built_in">print</span>(user.article)</span><br><span class="line"><span class="comment">#python</span></span><br><span class="line">&gt;&gt;&gt;<span class="built_in">print</span>(user.information)</span><br><span class="line"><span class="comment"># liuzaoqi python</span></span><br><span class="line">&gt;&gt;&gt;<span class="built_in">print</span>(user.url())</span><br><span class="line"><span class="comment">#THe aurthor url is liuzaoqi.python.com</span></span><br></pre></td></tr></table></figure>
-<p>如果我想修改，将‘python’ 改为 ‘study’：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">user.article = <span class="string">&#x27;study&#x27;</span></span><br><span class="line">&gt;&gt;&gt;<span class="built_in">print</span>(user.author)</span><br><span class="line"><span class="comment">#liuzaoqi</span></span><br><span class="line">&gt;&gt;&gt;<span class="built_in">print</span>(user.article)</span><br><span class="line"><span class="comment">#study</span></span><br><span class="line">&gt;&gt;&gt;<span class="built_in">print</span>(user.information)</span><br><span class="line"><span class="comment"># liuzaoqi python</span></span><br><span class="line">&gt;&gt;&gt;<span class="built_in">print</span>(user.url())</span><br><span class="line"><span class="comment">#THe aurthor url is liuzaoqi.study.com</span></span><br></pre></td></tr></table></figure>
-<p>其information 属性并没有更换为‘study’，因为如果我们更改了类中的一个属性的值，那么刚刚更改的属性生成的其他属性不会自动更新。<br>那要怎么解决？<br>方法一：将属性information 更改为方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Blog</span>():</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,name,title</span>):</span></span><br><span class="line">		self.article = title</span><br><span class="line">		self.aurthor = name		</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">information</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">return</span> <span class="string">f&#x27;<span class="subst">&#123;self.aurthor&#125;</span> <span class="subst">&#123;self.article&#125;</span>&#x27;</span>	</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">url</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">return</span> <span class="string">f&quot;The author url is <span class="subst">&#123;self.aurthor&#125;</span>.<span class="subst">&#123;self.article&#125;</span>.com&quot;</span>	</span><br><span class="line">user =Blog(<span class="string">&#x27;liuzaoqi&#x27;</span>,<span class="string">&#x27;python&#x27;</span>)</span><br><span class="line">user.article = <span class="string">&#x27;study&#x27;</span> </span><br><span class="line"><span class="built_in">print</span>(user.aurthor)</span><br><span class="line"><span class="comment">#liuzaoqi</span></span><br><span class="line"><span class="built_in">print</span>(user.article)</span><br><span class="line"><span class="comment">#study</span></span><br><span class="line"><span class="built_in">print</span>(user.information())</span><br><span class="line"><span class="comment">#liuzaoqi study</span></span><br><span class="line"><span class="built_in">print</span>(user.url())</span><br><span class="line"><span class="comment">#The author url is liuzaoqi.study.com</span></span><br></pre></td></tr></table></figure>
-<p>方法一可行，但规避了我们要讨论的问题，以后输出user.information 必须加上括号，使用user.information(),这样以来其他所有使用此代码的开发者都必须修改其代码。<br>方法二：使用@property </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Blog</span>():</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,name,title</span>):</span></span><br><span class="line">		self.article = title</span><br><span class="line">		self.aurthor = name</span><br><span class="line"><span class="meta">	@property	</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">information</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">return</span> <span class="string">f&#x27;<span class="subst">&#123;self.aurthor&#125;</span> <span class="subst">&#123;self.article&#125;</span>&#x27;</span>	</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">url</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">return</span> <span class="string">f&quot;The author url is <span class="subst">&#123;self.aurthor&#125;</span>.<span class="subst">&#123;self.article&#125;</span>.com&quot;</span>	</span><br></pre></td></tr></table></figure>
-<p>这样就可以正确输出。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/05/10/Python-Decorators/" data-id="ckxyga2w000081guwggab22cg" class="article-share-link">
-        分享
-      </a>
-      
-<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
-
-    </footer>
-
   </div>
 
-  
-  
-<nav class="article-nav">
-  
-  <a href="/2020/05/24/python%20%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%92%8C%E7%94%9F%E6%88%90%E5%99%A8/" class="article-nav-link">
-    <strong class="article-nav-caption">前一篇</strong>
-    <div class="article-nav-title">
-      
-      python 迭代器和生成器
-      
-    </div>
-  </a>
-  
-  
-  <a href="/2020/05/07/%E9%9D%92%E5%B2%9B%E6%B8%B8/" class="article-nav-link">
-    <strong class="article-nav-caption">后一篇</strong>
-    <div class="article-nav-title">五一：青岛</div>
-  </a>
-  
-</nav>
+{% endblock %}
 
-  
+{% block sidebar %}
+  {{ sidebar_template.render(true) }}
+{% endblock %}
 
-  
-  
-  
-  
-
-</article>
-</section>
-    <footer class="footer">
-  <div class="outer">
-    <div class="float-right">
-      <ul class="list-inline">
-  
-  <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
-  
-  <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
-  
-</ul>
-    </div>
-    <ul class="list-inline">
-      <li>Morty &copy; 2022</li>
-      
-        <li></li>
-      
-      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
-      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
-    </ul>
-  </div>
-</footer>
-  </main>
-  <aside class="sidebar">
-    <button class="navbar-toggle"></button>
-<nav class="navbar">
-  
-  <div class="logo">
-    <a href="/"><img src="/images/hexo.svg" alt="Morty"></a>
-  </div>
-  
-  <ul class="nav nav-main">
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/">Home</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/archives">Archives</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/gallery">Gallery</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/about">About</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link nav-item-search" title="搜索">
-        <i class="fe fe-search"></i>
-        搜索
-      </a>
-    </li>
-  </ul>
-</nav>
-<nav class="navbar navbar-bottom">
-  <ul class="nav">
-    <li class="nav-item">
-      <div class="totop" id="totop">
-  <i class="fe fe-rocket"></i>
-</div>
-    </li>
-    <li class="nav-item">
-      
-      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
-        <i class="fe fe-feed"></i>
-      </a>
-      
-    </li>
-  </ul>
-</nav>
-<div class="search-form-wrap">
-  <div class="local-search local-search-plugin">
-  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
-  <div id="local-search-result" class="local-search-result"></div>
-</div>
-</div>
-  </aside>
-  
-<script src="/js/jquery-2.0.3.min.js"></script>
-
-
-<script src="/js/jquery.justifiedGallery.min.js"></script>
-
-
-<script src="/js/lazyload.min.js"></script>
-
-
-<script src="/js/busuanzi-2.3.pure.min.js"></script>
-
-
-
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-
-<script src="/js/tocbot.min.js"></script>
-
-
-<script>
-  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
-  tocbot.init({
-    tocSelector: '.tocbot',
-    contentSelector: '.article-entry',
-    headingSelector: 'h1, h2, h3, h4, h5, h6',
-    hasInnerContainers: true,
-    scrollSmooth: true,
-    positionFixedSelector: '.tocbot',
-    positionFixedClass: 'is-position-fixed',
-    fixedSidebarOffset: 'auto',
-  });
-</script>
-
-
-
-<script src="/js/ocean.js"></script>
-
-</body>
-
-</html>
+{% block script_extra %}
+  {% include '_scripts/pages/post-details.swig' %}
+{% endblock %}
