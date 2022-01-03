@@ -1,37 +1,787 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="栈  栈是最简单的数据结构，先进后出。抽象数据类型(ADT)：  S.push(e):将一个元素e添加到栈S的栈顶 S.pop():将栈顶元素移除并返回栈顶的元素，如果此时栈为空的，操作将出错。 S.top():不移除栈顶元素，返回一个栈S的栈顶元素；若为空，操作将出错。 S.is_empty() : 如果栈中不包含任何元素，返回布尔值“True” len(s): 返回栈S中元素的数量。用 __">
+<meta property="og:type" content="article">
+<meta property="og:title" content="栈，队列和双端队列">
+<meta property="og:url" content="http://example.com/2020/06/14/python%20%E6%A0%88,%E9%98%9F%E5%88%97%E5%92%8C%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97/index.html">
+<meta property="og:site_name" content="Morty">
+<meta property="og:description" content="栈  栈是最简单的数据结构，先进后出。抽象数据类型(ADT)：  S.push(e):将一个元素e添加到栈S的栈顶 S.pop():将栈顶元素移除并返回栈顶的元素，如果此时栈为空的，操作将出错。 S.top():不移除栈顶元素，返回一个栈S的栈顶元素；若为空，操作将出错。 S.is_empty() : 如果栈中不包含任何元素，返回布尔值“True” len(s): 返回栈S中元素的数量。用 __">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-06-14T06:44:05.000Z">
+<meta property="article:modified_time" content="2020-06-20T08:14:34.365Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/06/14/python 栈,队列和双端队列/"/>
+
+
+
+
+
+  <title>栈，队列和双端队列 | Morty</title>
+  
+
+
+
+
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Morty</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">欲买桂花同载酒，终不似，少年游</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/06/14/python%20%E6%A0%88,%E9%98%9F%E5%88%97%E5%92%8C%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Morty">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">栈，队列和双端队列</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-14T14:44:05+08:00">
+                2020-06-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h1><p>  栈是最简单的数据结构，先进后出。<br>抽象数据类型(ADT)：</p>
+<ul>
+<li>S.push(e):将一个元素e添加到栈S的栈顶</li>
+<li>S.pop():将栈顶元素移除并返回栈顶的元素，如果此时栈为空的，操作将出错。</li>
+<li>S.top():不移除栈顶元素，返回一个栈S的栈顶元素；若为空，操作将出错。</li>
+<li>S.is_empty() : 如果栈中不包含任何元素，返回布尔值“True”</li>
+<li>len(s): 返回栈S中元素的数量。用 __ len __  这个方法实现它。<span id="more"></span></li>
+</ul>
+<p>用Python列表作为存储实现一个栈</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArrayStack</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self._data = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self._data)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self._data) == <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span>(<span class="params">self,e</span>):</span></span><br><span class="line">        self._data.append(e)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">top</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span>  self.is_empty():</span><br><span class="line">            <span class="keyword">raise</span> Empty(<span class="string">&#x27;stack is empty!!&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> self._data[-<span class="number">1</span>]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">raise</span> Empty(<span class="string">&quot;stack is empty!!!&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> self._data.pop()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用栈实现数据的逆置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reverse_file</span>(<span class="params">filename</span>):</span></span><br><span class="line">	S = ArrayStack()</span><br><span class="line">	original = <span class="built_in">open</span>(filename)</span><br><span class="line">	<span class="keyword">for</span> line <span class="keyword">in</span> original:</span><br><span class="line">		S.push(line.rstrip(<span class="string">&#x27;\n&#x27;</span>))</span><br><span class="line">	original.close()</span><br><span class="line">	output = <span class="built_in">open</span>(filename,<span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">	<span class="keyword">while</span> <span class="keyword">not</span> S.is_empty():</span><br><span class="line">		output.write(S.pop() + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">	output.close()</span><br></pre></td></tr></table></figure>
+
+<p>分隔符的匹配算法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_matched</span>(<span class="params">expr</span>):</span></span><br><span class="line">	lefty = <span class="string">&#x27;(&#123;[&#x27;</span></span><br><span class="line">	righty = <span class="string">&#x27;)&#125;]&#x27;</span></span><br><span class="line">	S = ArrayStack()</span><br><span class="line">	<span class="keyword">for</span> c <span class="keyword">in</span> expr:</span><br><span class="line">		<span class="keyword">if</span> c <span class="keyword">in</span> lefty:</span><br><span class="line">			S.push(c)</span><br><span class="line">		<span class="keyword">elif</span> c <span class="keyword">in</span> righty:</span><br><span class="line">			<span class="keyword">if</span> S.is_empty():</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">			<span class="keyword">if</span> righty.index(c) != lefty.index(S.pop()):</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">	<span class="keyword">return</span> S.is_empty()</span><br></pre></td></tr></table></figure>
+
+<h1 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h1><p>队列：先进先出，允许插入的一端为队尾，允许删除的一端为队头。<br>队列的抽象数据类型（ADT）支持：</p>
+<ul>
+<li>Q.enqueue(e) : 向队列Q的队尾添加一个元素。</li>
+<li>Q.dequeue() :向队列Q中移除并返回第一个元素，如果队列为空，则触发一个错误。</li>
+<li>Q.first() :在不移除的前提下返回第一个元素，如果队列为空，则触发一个错误。</li>
+<li>Q.is_empty() :如果队列Q没有包含任何元素则返回“True”</li>
+<li>len(Q) : 返回Q中元素的数量；使用 __ len __ 方法实现。</li>
+</ul>
+<p>基于数组的队列实现：</p>
+<p>1：到一个元素退出队列时，我们可以使用pop(0)从列表中移除第一个元素，但其最低效，因为删除列表首元素后，列表后面的元素都会左移动一位，为了填补pop操作给序列造成的“洞”，因此pop(0)的操作的调用总是处于最坏的情况，耗时为O(n)。</p>
+<p>2：对其改进避免调用pop(0),可以用一个指针为空的指针代替这个数组中离队的元素，并保留一个变量来储存当前在最前面的元素的索引，这样对离队操作而言耗时O(1).</p>
+<p>3:但不幸的是，修改后的方法仍然有一个缺点。如果不断重复地往一个队列中添加一个新的元素，然后删除最右端（将列表首元素指向空指针），其底层的列表大小将会增长到O(m)，m为自队列建立以来对队列进行追加元素操作的数量总和，而不是当前队列中元素的数量。对于这种情况，使用循环数组，假设底层数组的长度最小固定为N，当元素超过其数值时，底层数组长度变为2N，当元素不足N时，将其数组循环 以增加和删除操作，并保存首元素的索引。 当其删除操作致使实际元素小于底层数组大小的1/4 时，将底层数组减半（但最小数组固定为N）</p>
+<p>实现方法：</p>
+<ul>
+<li>_data: 指向一个固定容量的列表实例。</li>
+<li>_size: 是一个整数，代表当前存储在队列内的元素的数量。(与_data 列表的长度正好相对）</li>
+<li>_front: 代表_data实例队列中第一个元素的索引。当因增加或删除导致底层数组进行扩展或收缩时，将队列的—_front索引初始化为0.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArrayQueue</span>:</span></span><br><span class="line">    DEFAULT_CAPACITY = <span class="number">10</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self._data = [<span class="literal">None</span>]* ArrayQueue.DEFAULT_CAPACITY</span><br><span class="line">        self._size = <span class="number">0</span></span><br><span class="line">        self._front = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size == <span class="number">0</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">first</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;erroe&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self._data[self._front]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dequeue</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> (<span class="string">&#x27;queue is empty!!!&#x27;</span>)</span><br><span class="line">        answer = self._data[self._front] <span class="comment"># 保存队列首元素的值</span></span><br><span class="line">        self._data[self._front] = <span class="literal">None</span> <span class="comment">#将队列首元素设置为None</span></span><br><span class="line">        self._front = (self._front+<span class="number">1</span>)% <span class="built_in">len</span>(self._data) <span class="comment"># 更新首元素对应的索引值</span></span><br><span class="line">        self._size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> <span class="number">0</span>&lt; self._size &lt; <span class="built_in">len</span>(self._data)//<span class="number">4</span> <span class="keyword">and</span> <span class="built_in">len</span>(self._data)//<span class="number">2</span> &gt;= ArrayQueue.DEFAULT_CAPACITY: <span class="comment"># 删除队列首元素后，判断一下队列中的元素个数 。</span></span><br><span class="line">            self._resize(<span class="built_in">len</span>(self._data)//<span class="number">2</span>)                                <span class="comment"># 如小于底层数组大小的1/4 就将底层数组减半</span></span><br><span class="line">        <span class="keyword">return</span> answer </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">enequeue</span>(<span class="params">self,value</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self._size == <span class="built_in">len</span>(self._data): <span class="comment"># 判断队列元素是否占满底层数组，如果占满进入 _resize函数，将底层数组大小扩展为2倍。</span></span><br><span class="line">            self._resize(<span class="number">2</span>*<span class="built_in">len</span>(self._data))</span><br><span class="line">        avail = (self._front + self._size) % <span class="built_in">len</span>(self._data) <span class="comment"># 找到队列的增加元素的索引。</span></span><br><span class="line">             <span class="comment">#如self._front == 8,self._size == 3，即(8+3)%10为1. 即增加value的索引为1.</span></span><br><span class="line">        self._data[avail] = value  </span><br><span class="line">        self._size += <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_resize</span>(<span class="params">self,cap</span>):</span></span><br><span class="line">        <span class="comment"># 底层数组的扩展：当队列原始的大小正好为底层数组大小时，进行底层数组的扩展。</span></span><br><span class="line">        old = self._data  <span class="comment"># 将排满元素的底层数组保存到old变量中</span></span><br><span class="line">        self._data = [<span class="literal">None</span>] * cap <span class="comment"># 生成新大小的底层数组</span></span><br><span class="line">        walk = self._front <span class="comment"># 保存原始队列的头部索引</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self._size):</span><br><span class="line">            self._data[i] = old[walk] <span class="comment"># 用变量walk保存位置索引，将原始数组从头部往尾部循环，将其对应值赋值给新序列。</span></span><br><span class="line">            walk = (walk+<span class="number">1</span>)%<span class="built_in">len</span>(old) <span class="comment"># 将walk指向下一位</span></span><br><span class="line">        self._front = <span class="number">0</span> <span class="comment">#将新队列的头部指向位置0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="双端队列"><a href="#双端队列" class="headerlink" title="双端队列"></a>双端队列</h1><p>其数据结构：支持在队列的头部和尾部都进行插入和删除操作。</p>
+<ul>
+<li>D.add_first(e) :向双端队列前面添加一个元素e</li>
+<li>D.add_last(e) :向双端队列的后面添加一个元素e</li>
+<li>D.delete_first():从双端队列中移除并返回第一个元素。若双端队列为空，则触发一个错误。</li>
+<li>D.delete_last() :从双端队列中移除并返回最后一个元素，若双端队列为空，则触发一个错误。</li>
+<li>D.first() : 返回（但不移除）双端队列的第一个元素。若双端队列为空，则触发一个错误。</li>
+<li>D.last() : 返回（但不移除）双端队列的最后一个元素，若双端队列为空，则触发一个错误。</li>
+<li>D.is_empty() :如果双端队列不包含任何一个元素，则返回布尔值True</li>
+<li>len(D) : 返回当前双端队列的元素个数，用 __ len __ 方法实现。</li>
+</ul>
+<p>使用循环数组实现双端队列：建议保持三个变量： _data , _size , _front</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">double_queue</span>:</span></span><br><span class="line">    Array_capacity = <span class="number">10</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self._data = [<span class="literal">None</span>] * double_queue.Array_capacity</span><br><span class="line">        self._front = <span class="number">0</span></span><br><span class="line">        self._size = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._size == <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">first</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Queue is Empty!!&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self._data[self._front]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">last</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Queue is Empty!!&quot;</span></span><br><span class="line">        last = (self._front + self._size -<span class="number">1</span>) % <span class="built_in">len</span>(self._data)</span><br><span class="line">        <span class="keyword">return</span> self._data[last]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_first</span>(<span class="params">self,value</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self._size == <span class="built_in">len</span>(self._data):</span><br><span class="line">            self._resize(<span class="number">2</span>*<span class="built_in">len</span>(self._data))</span><br><span class="line">        front_index = (self._front-<span class="number">1</span>) % <span class="built_in">len</span>(self._data) </span><br><span class="line">        self._data[front_index] = value</span><br><span class="line">        self._front  = (front_index + <span class="built_in">len</span>(self._data))%(<span class="built_in">len</span>(self._data))</span><br><span class="line">        self._size += <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_last</span>(<span class="params">self,value</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self._size == <span class="built_in">len</span>(self._data):</span><br><span class="line">            self._resize(<span class="number">2</span>*<span class="built_in">len</span>(self._data))</span><br><span class="line">        last = (self._front + self._size  ) % <span class="built_in">len</span>(self._data)</span><br><span class="line">        self._data[last] = value</span><br><span class="line">        self._size += <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete_first</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Queue is Empty&quot;</span></span><br><span class="line">        answer = self._data[self._front]</span><br><span class="line">        self._data[self._front] = <span class="literal">None</span></span><br><span class="line">        self._front = (self._front+<span class="number">1</span>) % <span class="built_in">len</span>(self._data)</span><br><span class="line">        self._size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> answer</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete_last</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Queue is Empty&quot;</span></span><br><span class="line">        last = (self._front + self._size -<span class="number">1</span> ) % <span class="built_in">len</span>(self._data)</span><br><span class="line">        answer = self._data[last]</span><br><span class="line">        self._data[last] = <span class="literal">None</span></span><br><span class="line">        self._size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span>  <span class="number">0</span>&lt; self._size&lt; <span class="built_in">len</span>(self._data)//<span class="number">4</span> <span class="keyword">and</span> <span class="built_in">len</span>(self._data)//<span class="number">2</span> &gt;= double_queue.Array_capacity:</span><br><span class="line">            self._resize(<span class="built_in">len</span>(self._data)//<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span> answer</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_resize</span>(<span class="params">self,cap</span>):</span></span><br><span class="line">        old = self._data</span><br><span class="line">        self._data = [<span class="literal">None</span>] * cap</span><br><span class="line">        walk = self._front</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self._size):</span><br><span class="line">            self._data[i] = old[walk]</span><br><span class="line">            walk = (walk+<span class="number">1</span>) % <span class="built_in">len</span>(old)</span><br><span class="line">        self._front = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        a = []</span><br><span class="line">        walk = self._front</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self._size):</span><br><span class="line">            a.append(self._data[walk])</span><br><span class="line">            walk = (walk +<span class="number">1</span>)%<span class="built_in">len</span>(self._data)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">str</span>(a)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/07/leetcode-easy/" rel="next" title="Python Leetcode">
+                <i class="fa fa-chevron-left"></i> Python Leetcode
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/20/python%20linkedlist/" rel="prev" title="链表">
+                链表 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/1ALynH25XQsTyAk" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-Twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%88"><span class="nav-number">1.</span> <span class="nav-text">栈</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%9F%E5%88%97"><span class="nav-number">2.</span> <span class="nav-text">队列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97"><span class="nav-number">3.</span> <span class="nav-text">双端队列</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v="></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v="></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v="></script>
+<script type="text/javascript" src="/js/src/post-details.js?v="></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v="></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

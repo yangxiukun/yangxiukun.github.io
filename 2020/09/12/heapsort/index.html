@@ -1,37 +1,730 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="堆的相关概念 二叉树：每个节点最多有两个子树的数结构，一个节点只能分两叉。 完全二叉树：二叉树的层数为h，除最后一层外，其他层都必须挂满，而且最后一层叶子节点得从左往右依次排列。 堆：是完全二叉树，分为大根堆和小根堆。大根堆是父节点比子节点大，小根堆是父节点比子节点小。 堆的存储：用数组来表示堆，若root节点存在序号0处，那么第i节点得父节点下标就为取整(i-1)&#x2F;2。该节点得左右子节点为 2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="heapsort">
+<meta property="og:url" content="http://example.com/2020/09/12/heapsort/index.html">
+<meta property="og:site_name" content="Morty">
+<meta property="og:description" content="堆的相关概念 二叉树：每个节点最多有两个子树的数结构，一个节点只能分两叉。 完全二叉树：二叉树的层数为h，除最后一层外，其他层都必须挂满，而且最后一层叶子节点得从左往右依次排列。 堆：是完全二叉树，分为大根堆和小根堆。大根堆是父节点比子节点大，小根堆是父节点比子节点小。 堆的存储：用数组来表示堆，若root节点存在序号0处，那么第i节点得父节点下标就为取整(i-1)&#x2F;2。该节点得左右子节点为 2">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-09-12T05:29:09.000Z">
+<meta property="article:modified_time" content="2022-01-02T06:11:47.271Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/09/12/heapsort/"/>
+
+
+
+
+
+  <title>heapsort | Morty</title>
+  
+
+
+
+
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Morty</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">欲买桂花同载酒，终不似，少年游</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/12/heapsort/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Morty">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">heapsort</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-09-12T13:29:09+08:00">
+                2020-09-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p> 堆的相关概念</p>
+<p><strong>二叉树</strong>：每个节点最多有两个子树的数结构，一个节点只能分两叉。</p>
+<p><strong>完全二叉树</strong>：二叉树的层数为h，除最后一层外，其他层都必须挂满，而且最后一层叶子节点得从左往右依次排列。</p>
+<p><strong>堆</strong>：是完全二叉树，分为大根堆和小根堆。大根堆是父节点比子节点大，小根堆是父节点比子节点小。</p>
+<p>堆的存储：用数组来表示堆，若root节点存在序号0处，那么第i节点得父节点下标就为取整(i-1)/2。该节点得左右子节点为 2<em>i+1，2</em>i+2.<br>（如果root节点从1开始，那左右孩子节点分别为2i，2i+1.）</p>
+<p> 如何转化为大根堆： </p>
+<p>大根堆： 要求每个节点得值都大于它两个子节点的值，一个简单方法就是从最底层节点开始一个个调整大小关系。</p>
+<p>但因最后一层都是叶子节点，其没有孩子节点，所以要找到第一个有孩子节点的父节点，然后从该节点进行堆调整。如果最后一个叶子节点为a，其父节点为（a-1）/2.</p>
+<span id="more"></span>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heapify</span>(<span class="params">arr,n,i</span>):</span></span><br><span class="line">	largest  = i  <span class="comment"># Initialize largest as root </span></span><br><span class="line">	l = <span class="number">2</span>*i+<span class="number">1</span></span><br><span class="line">	r = <span class="number">2</span>*i + <span class="number">2</span></span><br><span class="line">	<span class="comment"># If left child is larger than root (also check if the child exist)</span></span><br><span class="line">	<span class="keyword">if</span> l &lt; n <span class="keyword">and</span> arr[l] &gt; arr[largest]:</span><br><span class="line">		largest = l</span><br><span class="line">	<span class="keyword">if</span> r &lt; n <span class="keyword">and</span> arr[r] &gt; arr[largest]:</span><br><span class="line">		largest = r</span><br><span class="line">	<span class="comment"># if largest is not root</span></span><br><span class="line">	<span class="keyword">if</span> largest != i:</span><br><span class="line">		arr[i] ,arr[largest] = arr[largest],arr[i] <span class="comment">##swap</span></span><br><span class="line">		<span class="comment"># 然后对其交换的位置 进行heapify。</span></span><br><span class="line">		heapify(arr,n,largest)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数组arr，长度n</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">buildheap</span>(<span class="params">arr,n</span>):</span></span><br><span class="line">	<span class="comment">#Index of last non-leaf node</span></span><br><span class="line">	startidx = n//<span class="number">2</span> -<span class="number">1</span></span><br><span class="line">	<span class="comment"># Perform reverse level order traversal </span></span><br><span class="line">    <span class="comment"># from last non-leaf node and heapify </span></span><br><span class="line">    <span class="comment"># each node </span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(startidx , -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">		heapify(arr,n,i)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heapsort</span>(<span class="params">arr</span>):</span></span><br><span class="line">	n = <span class="built_in">len</span>(arr)</span><br><span class="line">	<span class="keyword">while</span> n &gt;<span class="number">1</span>:</span><br><span class="line">		arr[<span class="number">0</span>],arr[n-<span class="number">1</span>] = arr[n-<span class="number">1</span>],arr[<span class="number">0</span>]<span class="comment">#将最大值放到数组末端</span></span><br><span class="line">		heapify(arr, n-<span class="number">1</span>, <span class="number">0</span>)<span class="comment"># 然后对数组除最后一个外的其他值进行heapify</span></span><br><span class="line">		n = n-<span class="number">1</span> </span><br><span class="line">	<span class="keyword">return</span> arr</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>构建大根堆：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Build_Max_Heap(A):</span><br><span class="line">	A.heap = A.length #数组长度</span><br><span class="line">	for i in floor(A.length/2) downto 1: </span><br><span class="line">		MAX_Heapify(A,i) </span><br><span class="line">MAX_Heapify(A,i):</span><br><span class="line">	l = LEFT(i) #父节点i的左孩子</span><br><span class="line">	r = Right(i) #父节点i的右孩子</span><br><span class="line">	if l &lt;= A.heap_szie and A[l] &gt; A[i]: #如果左孩子存在，而且其值大于父节点</span><br><span class="line">		largest = l #将 左孩子赋值给变量largest</span><br><span class="line">	else:</span><br><span class="line">		largest = i # 将 父节点的值赋给largest</span><br><span class="line">	if r &lt;= A.heap_size and A[r] &gt; A[largest]: #如果右孩子节点存在，且其值大于 largest</span><br><span class="line">		largest = r</span><br><span class="line">	if largest ≠ i : #如果largest 不等于 i，说明发生过交换，即父节点小于其子节点</span><br><span class="line">		exchange A[i] with A[largest]</span><br><span class="line">		MAX_Heapify(A,largest) #对发生交换的节点的 子堆 进行MAx_heapify建堆</span><br><span class="line"></span><br><span class="line">Heap_sort:</span><br><span class="line"></span><br><span class="line">first： create the MAX_heap</span><br><span class="line">Second:</span><br><span class="line">for i= A.length downto 2: </span><br><span class="line">	exchange A[1] with A[i]</span><br><span class="line">	A.heap_size -= 1</span><br><span class="line">	Max_heapify(A,1)	</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">def max_heapify(arr,n,i):</span><br><span class="line">	left = 2*i</span><br><span class="line">	right = 2*i+1</span><br><span class="line">	if left &lt;= n and arr[left] &gt; arr[i]:</span><br><span class="line">		largest = left</span><br><span class="line">	else: largest = i</span><br><span class="line">	if right &lt;= n and arr[right] &gt; arr[largest]:</span><br><span class="line">		largest = right</span><br><span class="line">	if largest != i:</span><br><span class="line">		arr[i],arr[largest] = arr[largest],arr[i]</span><br><span class="line">		max_heapify(arr,n,largest)</span><br><span class="line">def max_heap(arr,n):</span><br><span class="line">	startIdx = int(n/2)</span><br><span class="line">	for i in range(startIdx,-1,-1):</span><br><span class="line">		max_heapify(arr,n,i)	</span><br><span class="line">def heap_sort(arr,n):</span><br><span class="line">	max_heap(arr,n)</span><br><span class="line">	</span><br><span class="line">	for i in range(n,0,-1):		</span><br><span class="line">		arr[0],arr[i] = arr[i],arr[0]</span><br><span class="line">		n= n-1</span><br><span class="line">		max_heapify(arr,n,0)		</span><br><span class="line">	print(arr)</span><br><span class="line">heap_sort([12,4,7,9,9,11,45,6],7)</span><br><span class="line"></span><br><span class="line">[4, 6, 7, 9, 9, 11, 12, 45]</span><br></pre></td></tr></table></figure>
+
+<p>max_heapify 时间复杂度O(logn)<br>max_heap 时间复杂度O(n)<br>heap_sort 时间复杂度 O(n*logn)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##大根堆</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heapify</span>(<span class="params">arr,n,i</span>):</span></span><br><span class="line">	left = <span class="number">2</span>*i</span><br><span class="line">	right = <span class="number">2</span>*i+<span class="number">1</span></span><br><span class="line">	largest = i</span><br><span class="line">	<span class="keyword">if</span> left &lt;= n <span class="keyword">and</span> arr[left-<span class="number">1</span>]&gt; arr[largest-<span class="number">1</span>]:</span><br><span class="line">		largest = left</span><br><span class="line">	<span class="keyword">if</span> right &lt;= n <span class="keyword">and</span> arr[right-<span class="number">1</span>] &gt; arr[largest-<span class="number">1</span>]:</span><br><span class="line">		largest = right</span><br><span class="line">	<span class="keyword">if</span> largest != i :</span><br><span class="line">		arr[i-<span class="number">1</span>],arr[largest-<span class="number">1</span>] = arr[largest-<span class="number">1</span>],arr[i-<span class="number">1</span>]</span><br><span class="line">		heapify(arr,n,largest)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bulid_heap</span>(<span class="params">arr,n</span>):</span>	</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(arr) == <span class="number">1</span>:</span><br><span class="line">		<span class="keyword">return</span> arr</span><br><span class="line">	startid = n//<span class="number">2</span>  </span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span> (startid,<span class="number">0</span>,-<span class="number">1</span>):</span><br><span class="line">		heapify(arr,n,i)</span><br><span class="line">	<span class="keyword">return</span> arr</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span>(<span class="params"><span class="built_in">max</span> = <span class="number">30</span>,num = <span class="number">10</span></span>):</span></span><br><span class="line">	<span class="keyword">return</span> (random.randint(<span class="number">0</span>,<span class="built_in">max</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num))</span><br><span class="line">a = [<span class="number">16</span>, <span class="number">6</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">4</span>, <span class="number">22</span>, <span class="number">14</span>, <span class="number">26</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heap_sort</span>(<span class="params">arr</span>):</span></span><br><span class="line">	n = <span class="built_in">len</span>(a)</span><br><span class="line">	bulid_heap(arr,n)</span><br><span class="line">	<span class="keyword">while</span> n &gt;<span class="number">0</span>:</span><br><span class="line">		arr[<span class="number">0</span>],arr[n-<span class="number">1</span>] = arr[n-<span class="number">1</span>],arr[<span class="number">0</span>]</span><br><span class="line">		heapify(arr,n-<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">		n = n-<span class="number">1</span></span><br><span class="line">	<span class="keyword">return</span> arr</span><br><span class="line"><span class="built_in">print</span>(bulid_heap(a,<span class="built_in">len</span>(a)))</span><br><span class="line"><span class="built_in">print</span>(heap_sort(a))</span><br><span class="line">		</span><br><span class="line"></span><br><span class="line"><span class="comment"># 小根堆</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heapify</span>(<span class="params">arr,n,i</span>):</span></span><br><span class="line">	left = <span class="number">2</span>*i</span><br><span class="line">	right = <span class="number">2</span>*i +<span class="number">1</span></span><br><span class="line">	smallest = i</span><br><span class="line">	<span class="keyword">if</span> left &lt;=  n <span class="keyword">and</span> arr[left-<span class="number">1</span>] &lt; arr[smallest-<span class="number">1</span>]:</span><br><span class="line">		smallest = left</span><br><span class="line">	<span class="keyword">if</span> right &lt;= n <span class="keyword">and</span> arr[right-<span class="number">1</span>] &lt; arr[smallest-<span class="number">1</span>]:</span><br><span class="line">		smallest = right </span><br><span class="line">	<span class="keyword">if</span> smallest != i:</span><br><span class="line">		arr[i-<span class="number">1</span>],arr[smallest-<span class="number">1</span>] = arr[smallest-<span class="number">1</span>],arr[i-<span class="number">1</span>]</span><br><span class="line">		heapify(arr,n,smallest)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">min_heap</span>(<span class="params">arr,n</span>):</span></span><br><span class="line">	startid = n//<span class="number">2</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(startid,<span class="number">0</span>,-<span class="number">1</span>):</span><br><span class="line">		heapify(arr,n,i) </span><br><span class="line">	<span class="keyword">return</span> arr</span><br><span class="line">li = [<span class="number">26</span>, <span class="number">22</span>, <span class="number">10</span>, <span class="number">16</span>, <span class="number">8</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">14</span>, <span class="number">6</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">min_heap_sort</span>(<span class="params">arr</span>):</span></span><br><span class="line">	n = <span class="built_in">len</span>(arr)</span><br><span class="line">	min_heap(arr,n)</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">while</span> n&gt;<span class="number">0</span>:</span><br><span class="line">		arr[<span class="number">0</span>],arr[n-<span class="number">1</span>] = arr[n-<span class="number">1</span>],arr[<span class="number">0</span>]</span><br><span class="line">		heapify(arr,n-<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">		n = n-<span class="number">1</span></span><br><span class="line">	<span class="keyword">return</span> arr	</span><br><span class="line"><span class="comment"># print(min_heap_sort(li))	</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="comment">### top k问题</span></span><br><span class="line">time1 =time.time()</span><br><span class="line">li = <span class="built_in">list</span>(create(<span class="number">1000</span>,<span class="number">10000000</span>))</span><br><span class="line">time2 = time.time()</span><br><span class="line"><span class="built_in">print</span>(time2-time1)</span><br><span class="line"> <span class="comment"># 建立一个大小为k 的小根堆</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">top_k</span>(<span class="params">li,k= <span class="number">5</span></span>):</span></span><br><span class="line">	arr_front_k = li[:k]</span><br><span class="line">	top_k_heap = min_heap(arr_front_k,k)</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> li[k+<span class="number">1</span>:]:</span><br><span class="line">		<span class="keyword">if</span> i &gt; top_k_heap[<span class="number">0</span>]:		</span><br><span class="line">			top_k_heap[<span class="number">0</span>] = i</span><br><span class="line">			heapify(top_k_heap,k,<span class="number">1</span>)</span><br><span class="line">	<span class="keyword">return</span> min_heap_sort(top_k_heap)</span><br><span class="line"><span class="built_in">print</span>(top_k(li))</span><br><span class="line">time3 = time.time()</span><br><span class="line"><span class="built_in">print</span>(time3-time2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">21.82712697982788</span></span><br><span class="line">[<span class="number">1000</span>, <span class="number">1000</span>, <span class="number">1000</span>, <span class="number">1000</span>, <span class="number">1000</span>]</span><br><span class="line"><span class="number">0.7683639526367188</span></span><br><span class="line">[Finished <span class="keyword">in</span> <span class="number">23.1</span>s]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/08/25/DAC/" rel="next" title="Divide and Conquer Algorithm(分而治之算法)">
+                <i class="fa fa-chevron-left"></i> Divide and Conquer Algorithm(分而治之算法)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/10/23/shellsort/" rel="prev" title="希尔排序">
+                希尔排序 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/1ALynH25XQsTyAk" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-Twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v="></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v="></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v="></script>
+<script type="text/javascript" src="/js/src/post-details.js?v="></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v="></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
