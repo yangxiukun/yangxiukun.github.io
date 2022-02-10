@@ -81,13 +81,13 @@
 
 <meta name="description" content="争奈世人多聚散,频祝愿,如花似叶长相见">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python_genome">
+<meta property="og:title" content="Mr. Ben Langmead A01-A10">
 <meta property="og:url" content="http://example.com/2022/01/27/python-genome/index.html">
 <meta property="og:site_name" content="Morty">
 <meta property="og:description" content="争奈世人多聚散,频祝愿,如花似叶长相见">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-01-27T12:11:42.000Z">
-<meta property="article:modified_time" content="2022-02-09T08:22:34.063Z">
+<meta property="article:modified_time" content="2022-02-10T06:29:35.575Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary">
@@ -126,7 +126,7 @@
 
 
 
-  <title>python_genome | Morty</title>
+  <title>Mr. Ben Langmead A01-A10 | Morty</title>
   
 
 
@@ -264,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">python_genome</h1>
+          <h1 class="post-title" itemprop="name headline">Mr. Ben Langmead A01-A10</h1>
         
 
         <div class="post-meta">
@@ -330,6 +330,18 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#此reads共1000行，每行100个碱基，统计每一列gc的频次 除以 1000行，求百分比。</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span>  <span class="title">findGC_by_position</span>(<span class="params">reads</span>):</span></span><br><span class="line">	gc = [<span class="number">0</span>]*<span class="number">100</span></span><br><span class="line">	total = [<span class="number">0</span>]*<span class="number">100</span></span><br><span class="line">	<span class="keyword">for</span> read <span class="keyword">in</span> reads: <span class="comment">##读取每一行100个碱基。</span></span><br><span class="line">		<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(read)):</span><br><span class="line">			<span class="keyword">if</span> read[i] == <span class="string">&#x27;G&#x27;</span> <span class="keyword">or</span> read[i] == <span class="string">&#x27;C&#x27;</span>:</span><br><span class="line">				gc[i] += <span class="number">1</span></span><br><span class="line">			total[i] += <span class="number">1</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(gc)):</span><br><span class="line">		<span class="keyword">if</span> total[i] &gt; <span class="number">0</span>:</span><br><span class="line">			gc[i] = gc[i]/total[i]</span><br><span class="line">	<span class="keyword">return</span> gc</span><br><span class="line"><span class="built_in">print</span>(findGC_by_position(seqs))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[<span class="number">0.486</span>, <span class="number">0.535</span>, <span class="number">0.574</span>, <span class="number">0.569</span>, <span class="number">0.58</span>, <span class="number">0.562</span>, <span class="number">0.557</span>, <span class="number">0.563</span>, <span class="number">0.562</span>, <span class="number">0.577</span>, <span class="number">0.582</span>, <span class="number">0.547</span>, <span class="number">0.531</span>, <span class="number">0.572</span>, <span class="number">0.548</span>, <span class="number">0.546</span>, <span class="number">0.566</span>, <span class="number">0.587</span>, <span class="number">0.546</span>, <span class="number">0.548</span>, <span class="number">0.578</span>, <span class="number">0.588</span>, <span class="number">0.601</span>, <span class="number">0.594</span>, <span class="number">0.534</span>, <span class="number">0.553</span>, <span class="number">0.553</span>, <span class="number">0.577</span>, <span class="number">0.626</span>, <span class="number">0.565</span>, <span class="number">0.539</span>, <span class="number">0.579</span>, <span class="number">0.558</span>, <span class="number">0.593</span>, <span class="number">0.59</span>, <span class="number">0.578</span>, <span class="number">0.579</span>, <span class="number">0.567</span>, <span class="number">0.561</span>, <span class="number">0.599</span>, <span class="number">0.591</span>, <span class="number">0.575</span>, <span class="number">0.546</span>, <span class="number">0.549</span>, <span class="number">0.574</span>, <span class="number">0.547</span>, <span class="number">0.566</span>, <span class="number">0.593</span>, <span class="number">0.553</span>, <span class="number">0.578</span>, <span class="number">0.566</span>, <span class="number">0.579</span>, <span class="number">0.596</span>, <span class="number">0.578</span>, <span class="number">0.606</span>, <span class="number">0.576</span>, <span class="number">0.551</span>, <span class="number">0.59</span>, <span class="number">0.554</span>, <span class="number">0.568</span>, <span class="number">0.575</span>, <span class="number">0.565</span>, <span class="number">0.597</span>, <span class="number">0.539</span>, <span class="number">0.584</span>, <span class="number">0.577</span>, <span class="number">0.549</span>, <span class="number">0.581</span>, <span class="number">0.598</span>, <span class="number">0.578</span>, <span class="number">0.564</span>, <span class="number">0.553</span>, <span class="number">0.571</span>, <span class="number">0.551</span>, <span class="number">0.575</span>, <span class="number">0.548</span>, <span class="number">0.591</span>, <span class="number">0.579</span>, <span class="number">0.571</span>, <span class="number">0.572</span>, <span class="number">0.558</span>, <span class="number">0.602</span>, <span class="number">0.578</span>, <span class="number">0.582</span>, <span class="number">0.548</span>, <span class="number">0.583</span>, <span class="number">0.542</span>, <span class="number">0.57</span>, <span class="number">0.601</span>, <span class="number">0.593</span>, <span class="number">0.551</span>, <span class="number">0.594</span>, <span class="number">0.543</span>, <span class="number">0.607</span>, <span class="number">0.572</span>, <span class="number">0.598</span>, <span class="number">0.598</span>, <span class="number">0.536</span>, <span class="number">0.593</span>, <span class="number">0.561</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> collections</span><br><span class="line">collect = collections.Counter()</span><br><span class="line"><span class="keyword">for</span> seq <span class="keyword">in</span> seqs:</span><br><span class="line">	<span class="keyword">for</span>  i <span class="keyword">in</span> seq:</span><br><span class="line">		collect[i] += <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(collect)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;Counter(&#123;<span class="string">&#x27;G&#x27;</span>: <span class="number">28742</span>, <span class="string">&#x27;C&#x27;</span>: <span class="number">28272</span>, <span class="string">&#x27;T&#x27;</span>: <span class="number">21836</span>, <span class="string">&#x27;A&#x27;</span>: <span class="number">21132</span>, <span class="string">&#x27;N&#x27;</span>: <span class="number">18</span>&#125;)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>A04：序列简单对比</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">t = <span class="string">&#x27;ATGACTAGCGCTGCC&#x27;</span></span><br><span class="line">p = <span class="string">&#x27;TG&#x27;</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">naive</span>(<span class="params">p,t</span>):</span></span><br><span class="line"></span><br><span class="line">	occurrences = [] <span class="comment">#返回匹配处的坐标</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(t)-<span class="built_in">len</span>(p)+<span class="number">1</span>):<span class="comment">#从第一个字母开始 直到len(t)-len(p)+1 的位置，因为再后面长度不够肯定无法匹配</span></span><br><span class="line">		match = <span class="literal">True</span></span><br><span class="line">		<span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(p)):</span><br><span class="line">			<span class="keyword">if</span> <span class="keyword">not</span> t[i+j] == p[j]:<span class="comment">## 判断为不匹配时，跳出。如果匹配继续往下循环。</span></span><br><span class="line">				match = <span class="literal">False</span></span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">		<span class="keyword">if</span> match:</span><br><span class="line">			occurrences.append(i)</span><br><span class="line">	<span class="keyword">return</span> occurrences</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(naive(p,t))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[<span class="number">1</span>, <span class="number">11</span>]</span><br></pre></td></tr></table></figure>
+<p>A05： Boyer–Moore字符串搜索算法</p>
+<p>```python</p>
+<p>第一种，第一个字符匹配就失败了，而且这个字符没有在pattern里面出现过。</p>
+<p>Google Removes ‘Don’t Be Evil’ Clause From Its Code of Conduct<br>Evil</p>
+<p>我们要在这句话里面找Evil。首先我们比较Goog和Evil，从字符串的头部，但是从pattern的尾部开始。显然第一次比较g和l就失败了。而且我们发现，g并没有出现在Evil里面。怎么办？直接就挪动4个字符（Evil的长度）</p>
+<p>Google Removes ‘Don’t Be Evil’ Clause From Its Code of Conduct<br>    Evil(R)<br>        Evil(v)</p>
+<p>第二种，第一个字符匹配就失败了，而且这个字符在pattern里面出现了</p>
+<p>还是刚才那个例子，我们挪动了两次，终于遇到了emov和Evil。v和l显然是不一样的，但是v在Evil里面出现过。怎么办？我们要做的就是对齐v字符，然后就变成这样：</p>
+<p>Google Removes ‘Don’t Be Evil’ Clause From Its Code of Conduct<br>          Evil(s)<br>              Evil(o)<br>                  Evil( )<br>                      Evil(E!)<br>                         Evil(yes!)</p>
+<p>如果这个字符在pattern里面出现了多次，就取最后一个。</p>
+<p>第三种，匹配了一个后缀成功，而且这个后缀在pattern里的其他地方出现了。</p>
+
       
     </div>
     
@@ -368,6 +380,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/02/10/python-genome-1/" rel="prev" title="Mr. Ben Langmead A11-A20">
+                Mr. Ben Langmead A11-A20 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -439,7 +455,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
